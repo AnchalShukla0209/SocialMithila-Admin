@@ -1,0 +1,611 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* General Card & Scroll */
+    .card {
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .m-scroll {
+        max-height: 350px;
+        overflow-y: auto;
+    }
+
+    .list-group-item {
+        border-radius: 8px;
+        margin-bottom: 6px;
+        transition: all 0.2s ease;
+    }
+
+        .list-group-item:hover {
+            background-color: #f7f7f7;
+            transform: translateY(-2px);
+        }
+
+    /* Badge & Text Gradients */
+    .text-primary {
+        color: #2575fc;
+    }
+
+    .text-success {
+        color: #00b09b;
+    }
+
+    .text-danger {
+        color: #f85032;
+    }
+
+    .text-pink {
+        color: #ff4b2b;
+    }
+
+    .text-purple {
+        color: #6a11cb;
+    }
+
+    /* Activity Feed */
+    .activity {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    .img-activity {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 10px;
+    }
+
+    .item-activity p {
+        margin: 0;
+        font-size: 13px;
+    }
+
+    .added-project {
+        font-weight: 600;
+    }
+
+    /* Task Statistics */
+    .task-box {
+        border-radius: 12px;
+        padding: 20px;
+        color: #fff;
+    }
+
+        .task-box.primary {
+            background: linear-gradient(90deg,#6a11cb,#2575fc);
+        }
+
+        .task-box.danger {
+            background: linear-gradient(90deg,#f85032,#e73827);
+        }
+
+    .tasks {
+        padding: 10px 0;
+        border-bottom: 1px solid #f0f0f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .post {
+        position: relative;
+    }
+
+    .actions button {
+        cursor: pointer;
+    }
+
+    .emoji-reactions {
+        display: none !important;
+        top: -55px;
+        left: -85px;
+        z-index: 1000;
+        flex-direction: row;
+    }
+
+    .like-container:hover .emoji-reactions {
+        display: flex !important;
+    }
+
+    .emoji-reactions span {
+        cursor: pointer;
+        font-size: 24px;
+        margin: 0 5px;
+        transition: transform 0.2s;
+    }
+
+        .emoji-reactions span:hover {
+            transform: scale(1.5);
+        }
+
+    /* comment section */
+    .comment {
+        background: #f0f2f5;
+        padding: 6px 10px;
+        border-radius: 12px;
+        font-size: 14px;
+        margin-bottom: 4px;
+    }
+</style>
+<!-- Page Header -->
+<div class="d-sm-flex d-block align-items-center justify-content-between page-header-breadcrumb">
+    <div>
+        <h4 class="fw-medium mb-2">Hi, Welcome back!</h4>
+        <div class="ms-sm-1 ms-0">
+            <nav>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                    <li class="breadcrumb-item active fw-normal" aria-current="page">Hi, Welcome back!</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="d-flex my-auto">
+        <div class=" d-sm-flex right-page">
+            <!--<div class="d-flex justify-content-sm-center align-items-center p-2 bg-light rounded">
+                <div class="">
+                    <span class="d-block">
+                        <span class="label text-muted fs-12">NEW POSTS</span>
+                    </span>
+                    <span class="value fs-18 fw-bold">
+                        3,214
+                    </span>
+                </div>
+                <div class="ms-3 mt-1 flex-grow-1">-->
+            <!-- Example progress bar -->
+            <!--<div class="progress" style="height:6px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-sm-center align-items-center p-2 bg-light rounded">
+                <div class="">
+                    <span class="d-block">
+                        <span class="label text-muted fs-12">NEW CONNECTIONS</span>
+                    </span>
+                    <span class="value fs-18 fw-bold">
+                        1,245
+                    </span>
+                </div>
+                <div class="ms-3 mt-1 flex-grow-1">-->
+            <!-- Example progress bar -->
+            <!--<div class="progress" style="height:6px;">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>-->
+
+        </div>
+    </div>
+</div>
+<!-- Page Header Close -->
+<!-- Start::app-content -->
+<div class="main-content app-content">
+    <div class="container-fluid">
+        <!-- row -->
+        <div class="row row-sm">
+            <!-- Local Events -->
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 mb-4">
+                <div class="card overflow-hidden project-card">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="my-auto">
+                                <!-- Event Icon -->
+                                <svg class="me-4 ht-60 wd-60 my-auto primary" viewBox="0 0 469.682 469.682" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="m120.41 298.32h87.771c5.771 0 10.449-4.678 10.449-10.449s-4.678-10.449-10.449-10.449h-87.771c-5.771 0-10.449 4.678-10.449 10.449s4.678 10.449 10.449 10.449z" />
+                                    <path d="m291.77 319.22h-171.36c-5.771 0-10.449 4.678-10.449 10.449s4.678 10.449 10.449 10.449h171.36c5.771 0 10.449-4.678 10.449-10.449s-4.678-10.449-10.449-10.449z" />
+                                    <path d="m291.77 361.01h-171.36c-5.771 0-10.449 4.678-10.449 10.449s4.678 10.449 10.449 10.449h171.36c5.771 0 10.449-4.678 10.449-10.449s-4.678-10.449-10.449-10.449z" />
+                                    <path d="M420.29 387.14V42.32c0-22.987-16.196-42.318-39.183-42.318H156.456c-22.988 0-44.408 19.331-44.408 42.318v20.376H93.762c-22.988 0-44.408 17.763-44.408 40.751v345.34c0.68 6.37 4.644 11.919 10.449 14.629 6.009 2.654 13.026 1.416 17.763-3.135l31.869-28.735 38.139 33.959c2.845 2.639 6.569 4.128 10.449 4.18 3.861-0.144 7.554-1.621 10.449-4.18l37.616-33.959 37.616 33.959c5.95 5.322 14.948 5.322 20.898 0l38.139-33.959 31.347 28.735c3.795 4.671 10.374 5.987 15.673 3.135 5.191-2.98 8.232-8.656 7.837-14.629v-74.188l6.269-4.702 31.869 28.735c2.947 2.811 6.901 4.318 10.971 4.18 1.806 0.163 3.62-0.2 5.224-1.045 5.493-2.735 8.793-8.511 8.361-14.629z" />
+                                </svg>
+                            </div>
+                            <div class="project-content">
+                                <h6>Local Events</h6>
+                                <ul>
+                                    <li><strong>Upcoming</strong> <span>5</span></li>
+                                    <li><strong>Completed</strong> <span>12</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Community Tasks -->
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 mb-4">
+                <div class="card overflow-hidden project-card">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="my-auto">
+                                <!-- Task Icon -->
+                                <svg class="me-4 ht-60 wd-60 my-auto danger" viewBox="0 0 438.891 438.891" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="m347.97 57.503h-39.706v-17.763c0-5.747-6.269-8.359-12.016-8.359h-30.824c-7.314-20.898-25.6-31.347-46.498-31.347-20.668-0.777-39.467 11.896-46.498 31.347h-30.302c-5.747 0-11.494 2.612-11.494 8.359v17.763h-39.707c-23.53 0.251-42.78 18.813-43.886 42.318v299.36c0 22.988 20.898 39.706 43.886 39.706h257.04c22.988 0 43.886-16.718 43.886-39.706v-299.36c-1.106-23.506-20.356-42.068-43.886-42.319z" />
+                                </svg>
+                            </div>
+                            <div class="project-content">
+                                <h6>Community Tasks</h6>
+                                <ul>
+                                    <li><strong>Pending</strong> <span>18</span></li>
+                                    <li><strong>Completed</strong> <span>42</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Donations/Contributions -->
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 mb-4">
+                <div class="card overflow-hidden project-card">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="my-auto">
+                                <!-- Donation Icon -->
+                                <svg class="me-4 ht-60 wd-60 my-auto success" viewBox="0 0 477.849 477.849" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="m374.1 385.52c71.682-74.715 69.224-193.39-5.492-265.08-34.974-33.554-81.584-52.26-130.05-52.193-103.54-0.144-187.59 83.676-187.74 187.22-0.067 48.467 18.639 95.077 52.193 130.05l-48.777 65.024c-5.655 7.541-4.127 18.238 3.413 23.893s18.238 4.127 23.893-3.413l47.275-63.044c65.4 47.651 154.08 47.651 219.48 0l47.275 63.044c5.655 7.541 16.353 9.069 23.893 3.413 7.541-5.655 9.069-16.353 3.413-23.893l-48.775-65.024z" />
+                                </svg>
+                            </div>
+                            <div class="project-content">
+                                <h6>Donations</h6>
+                                <ul>
+                                    <li><strong>Received</strong> <span>12,340</span></li>
+                                    <li><strong>Spent</strong> <span>7,580</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Members / Facebook Feed -->
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 mb-4">
+                <div class="card overflow-hidden project-card">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="my-auto">
+                                <!-- Facebook Icon -->
+                                <svg class="me-4 ht-60 wd-60 my-auto info" viewBox="0 0 320 512" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M279.14 288l14.22-92.66h-88.91V117.33c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S293.91 0 259.61 0c-73.13 0-121.25 44.38-121.25 124.72V195.3H75.41V288h63.04v224h92.66V288z" />
+                                </svg>
+                            </div>
+                            <div class="project-content">
+                                <h6>Active Members</h6>
+                                <ul>
+                                    <li><strong>Online</strong> <span>134</span></li>
+                                    <li><strong>New Posts</strong> <span>27</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- row -->
+        <!-- row -->
+        <div class="row row-sm ">
+            <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12">
+                <div class="card overflow-hidden">
+                    <div class="card-header bg-transparent p-4">
+                        <div class="d-flex justify-content-between">
+                            <h4 class="card-title mg-b-10">Community Growth</h4>
+                        </div>
+                        <p class="fs-12 text-muted mb-2">
+                            Track how the Mithila community is growing across users, businesses, and events.
+                            <a class="text-primary" href="">Learn more</a>
+                        </p>
+                    </div>
+                    <div class="card-body pd-y-7">
+                        <div class="area chart-legend mb-0 d-flex justify-content-center">
+                            <div class="ms-2">
+                                <i class="mdi mdi-account-multiple text-primary"></i> Users
+                            </div>
+                            <div class="ms-2">
+                                <i class="mdi mdi-store text-pink"></i> Businesses
+                            </div>
+                            <div class="ms-2">
+                                <i class="mdi mdi-calendar text-success"></i> Events
+                            </div>
+                        </div>
+                        <!-- keep existing chart container, just change the context -->
+                        <div id="communitygrowth"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4">
+                <div class="card overflow-hidden">
+                    <div class="card-body pb-3">
+                        <div class="card-header">
+                            <h4 class="card-title mg-b-10">Posts &amp; Blogs</h4>
+                            <p class="fs-12 text-muted mb-3">
+                                Here you can see the latest posts, blogs, and activities shared by the Mithila community.
+                                <a class="text-primary" href="">Learn more</a>
+                            </p>
+                        </div>
+                        <div class="table-responsive mb-0 projects-stat fs-14">
+                            <table class="table table-hover table-bordered mb-0 text-md-nowrap text-lg-nowrap text-xl-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Post / Blog</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="project-names">
+                                                <h6 class="bg-primary-transparent text-primary d-inline-block me-2 text-center">P</h6>
+                                                <p class="d-inline-block font-weight-semibold mb-0 fs-14">Prashant’s Blog on Mithila Culture</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="badge bg-success">Published</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="project-names">
+                                                <h6 class="bg-pink-transparent text-pink d-inline-block text-center me-2">S</h6>
+                                                <p class="d-inline-block font-weight-semibold mb-0 fs-14">Shreya’s Boutique Listing</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="badge bg-warning">Pending Review</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="project-names">
+                                                <h6 class="bg-success-transparent text-success d-inline-block me-2 text-center">A</h6>
+                                                <p class="d-inline-block font-weight-semibold mb-0 fs-14">Amit’s Festival Photos</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="badge bg-danger">Rejected</div>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- /row -->
+        <!-- row -->
+        <div class="row row-sm">
+
+            <div class="col-lg-6 col-xl-4 col-md-12 col-sm-12">
+                <div class="card overflow-hidden shadow-sm border-0 rounded-3">
+                    <div class="card-header bg-transparent border-bottom-0 pt-4 pb-0">
+                        <h4 class="card-title mb-2">Latest Posts</h4>
+                        <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold">
+                            <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#posttab-1">Today</a></li>
+                            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#posttab-2">Week</a></li>
+                            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#posttab-3">Month</a></li>
+                        </ul>
+                    </div>
+                    <div class="card-body pt-3">
+                        <div class="tab-content">
+                            <div class="tab-pane fade active show" id="posttab-1">
+                                <div class="d-flex mb-3 p-2 rounded bg-light hover-shadow post">
+                                    <img src="~/assets/images/faces/1.png" alt="user" class="rounded-circle me-3" width="50" style="height: 50px;">
+                                    <div class="w-100">
+                                        <h6 class="mb-1">Ravi Kumar <small class="text-muted">2 hrs ago</small></h6>
+                                        <p class="mb-1">“Just discovered an amazing Mithila painting store near Darbhanga!”</p>
+
+                                        <div class="actions d-flex align-items-center position-relative mb-2">
+                                            <div class="like-container position-relative me-2">
+                                                <button class="like-btn btn btn-light btn-sm">👍 Like</button>
+
+                                                <!-- Emoji reactions (only for Like button) -->
+                                                <div class="emoji-reactions position-absolute bg-white p-2 rounded shadow">
+                                                    <span class="emoji" data-emoji="👍">👍</span>
+                                                    <span class="emoji" data-emoji="❤️">❤️</span>
+                                                    <span class="emoji" data-emoji="😂">😂</span>
+                                                    <span class="emoji" data-emoji="😮">😮</span>
+                                                    <span class="emoji" data-emoji="😢">😢</span>
+                                                    <span class="emoji" data-emoji="😡">😡</span>
+                                                </div>
+                                            </div>
+
+                                            <button class="comment-btn btn btn-light btn-sm">💬 Comment</button>
+                                        </div>
+
+                                        <!-- Comments section -->
+                                        <div class="comments"></div>
+
+                                        <!-- Hidden comment box -->
+                                        <div class="comment-box d-none mt-2">
+                                            <input type="text" class="form-control form-control-sm comment-input" placeholder="Write a comment...">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex mb-3 p-2 rounded bg-light hover-shadow post">
+                                    <img src="~/assets/images/faces/1.png" alt="user" class="rounded-circle me-3" width="50" style="height: 50px;">
+                                    <div class="w-100">
+                                        <h6 class="mb-1">Ravi Kumar <small class="text-muted">2 hrs ago</small></h6>
+                                        <p class="mb-1">“Just discovered an amazing Mithila painting store near Darbhanga!”</p>
+
+                                        <div class="actions d-flex align-items-center position-relative mb-2">
+                                            <div class="like-container position-relative me-2">
+                                                <button class="like-btn btn btn-light btn-sm">👍 Like</button>
+
+                                                <!-- Emoji reactions (only for Like button) -->
+                                                <div class="emoji-reactions position-absolute bg-white p-2 rounded shadow">
+                                                    <span class="emoji" data-emoji="👍">👍</span>
+                                                    <span class="emoji" data-emoji="❤️">❤️</span>
+                                                    <span class="emoji" data-emoji="😂">😂</span>
+                                                    <span class="emoji" data-emoji="😮">😮</span>
+                                                    <span class="emoji" data-emoji="😢">😢</span>
+                                                    <span class="emoji" data-emoji="😡">😡</span>
+                                                </div>
+                                            </div>
+
+                                            <button class="comment-btn btn btn-light btn-sm">💬 Comment</button>
+                                        </div>
+
+                                        <!-- Comments section -->
+                                        <div class="comments"></div>
+
+                                        <!-- Hidden comment box -->
+                                        <div class="comment-box d-none mt-2">
+                                            <input type="text" class="form-control form-control-sm comment-input" placeholder="Write a comment...">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- More posts -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4">
+                <div class="card overflow-hidden shadow-sm border-0 rounded-3">
+                    <div class="card-header bg-transparent border-bottom-0 pt-4">
+                        <h4 class="card-title mb-2">Trending Businesses</h4>
+                        <p class="fs-12 text-muted">Top searches and popular activities this week on Social Mithila.</p>
+                    </div>
+                    <div class="card-body text-center">
+                        <!-- Chart Placeholder -->
+                        <div id="trendingchart" class="mb-4" style="height:200px;"></div>
+
+                        <!-- Legend & Stats -->
+                        <div class="d-flex justify-content-around mb-3">
+                            <div class="text-center">
+                                <div class="legend bg-primary-gradient rounded-pill d-inline-block me-2"></div>
+                                <span class="fw-bold">40%</span>
+                                <p class="small text-muted mb-0">Restaurants</p>
+                                <p class="fs-12 text-muted">1,234 searches</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="legend bg-danger-gradient rounded-pill d-inline-block me-2"></div>
+                                <span class="fw-bold">35%</span>
+                                <p class="small text-muted mb-0">Shops</p>
+                                <p class="fs-12 text-muted">1,067 searches</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="legend bg-success-gradient rounded-pill d-inline-block me-2"></div>
+                                <span class="fw-bold">25%</span>
+                                <p class="small text-muted mb-0">Services</p>
+                                <p class="fs-12 text-muted">765 searches</p>
+                            </div>
+                        </div>
+
+                        <!-- Additional Info -->
+                        <div class="d-flex justify-content-between mt-3 pt-2 border-top">
+                            <div class="text-center">
+                                <p class="fs-12 text-muted mb-1">New Listings</p>
+                                <h6 class="mb-0 text-primary">145</h6>
+                            </div>
+                            <div class="text-center">
+                                <p class="fs-12 text-muted mb-1">Followers Gained</p>
+                                <h6 class="mb-0 text-danger">320</h6>
+                            </div>
+                            <div class="text-center">
+                                <p class="fs-12 text-muted mb-1">Shares</p>
+                                <h6 class="mb-0 text-success">87</h6>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-outline-primary btn-sm mt-3">View Full Trends</button>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-lg-12 col-xl-4 col-md-12 col-sm-12">
+                <div class="card card-dashboard-events shadow-sm border-0 rounded-3">
+                    <div class="card-header bg-transparent border-bottom-0 pt-4">
+                        <h4 class="card-title mb-2">Upcoming Cultural Events</h4>
+                        <p class="fs-12 text-muted">Festivals, exhibitions & social gatherings.</p>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush">
+                            <div class="list-group-item d-flex align-items-start">
+                                <div class="event-indicator bg-primary-gradient me-3 rounded-circle"></div>
+                                <div>
+                                    <label class="fw-bold">Oct 2 <span class="text-muted">Wednesday</span></label>
+                                    <h6 class="mb-1">Mithila Painting Exhibition</h6>
+                                    <p class="mb-1"><strong>10AM - 6PM</strong> Darbhanga Art Gallery</p>
+                                    <small><span class="badge bg-success">Free Entry</span></small>
+                                </div>
+                            </div>
+                            <div class="list-group-item d-flex align-items-start">
+                                <div class="event-indicator bg-danger-gradient me-3 rounded-circle"></div>
+                                <div>
+                                    <label class="fw-bold">Oct 5 <span class="text-muted">Saturday</span></label>
+                                    <h6 class="mb-1">Mithila Food Festival</h6>
+                                    <p class="mb-1"><strong>12PM - 9PM</strong> Patna Exhibition Ground</p>
+                                    <small><span class="badge bg-warning">Limited Tickets</span></small>
+                                </div>
+                            </div>
+                            <div class="list-group-item d-flex align-items-start">
+                                <div class="event-indicator bg-info-gradient me-3 rounded-circle"></div>
+                                <div>
+                                    <label class="fw-bold">Oct 10 <span class="text-muted">Thursday</span></label>
+                                    <h6 class="mb-1">Mithila Startup Meet</h6>
+                                    <p class="mb-1"><strong>2PM - 8PM</strong> Mithila University, Darbhanga</p>
+                                    <small><span class="badge bg-primary">Registration Open</span></small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('.post').forEach(post => {
+        const likeBtn = post.querySelector('.like-btn');
+        const emojiBox = post.querySelector('.emoji-reactions');
+        const commentBtn = post.querySelector('.comment-btn');
+        const commentsDiv = post.querySelector('.comments');
+        const commentBox = post.querySelector('.comment-box');
+        const commentInput = post.querySelector('.comment-input');
+
+        // Emoji selection
+        emojiBox.querySelectorAll('.emoji').forEach(emoji => {
+            emoji.addEventListener('click', () => {
+                likeBtn.innerHTML = emoji.dataset.emoji + " Like";
+            });
+        });
+
+        // Show comment box
+        commentBtn.addEventListener('click', () => {
+            commentBox.classList.toggle('d-none');
+            commentInput.focus();
+        });
+
+        // Submit comment on Enter
+        commentInput.addEventListener('keypress', e => {
+            if (e.key === "Enter" && commentInput.value.trim() !== "") {
+                const commentEl = document.createElement('div');
+                commentEl.classList.add('comment');
+                commentEl.textContent = commentInput.value.trim();
+                commentsDiv.appendChild(commentEl);
+                commentInput.value = "";
+            }
+        });
+    });
+</script>
