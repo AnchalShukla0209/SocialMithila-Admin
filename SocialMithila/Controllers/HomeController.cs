@@ -12,6 +12,7 @@ namespace SocialMithila.Controllers
     public class HomeController : Controller
     {
         private readonly string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
         public ActionResult Index()
         {
             return View();
@@ -34,10 +35,10 @@ namespace SocialMithila.Controllers
                 using (SqlCommand cmd = new SqlCommand("USP_GetUserList", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@UserIds", (object)userIds ?? DBNull.Value);
-                    cmd.Parameters.AddWithValue("@FromDate", (object)fromDate ?? DBNull.Value);
-                    cmd.Parameters.AddWithValue("@ToDate", (object)toDate ?? DBNull.Value);
-                    cmd.Parameters.AddWithValue("@Status", (object)status ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@UserIds", (object)userIds ?? null);
+                    cmd.Parameters.AddWithValue("@FromDate", (object)fromDate ?? null);
+                    cmd.Parameters.AddWithValue("@ToDate", (object)toDate ?? null);
+                    cmd.Parameters.AddWithValue("@Status", (object)status ?? null);
                     cmd.Parameters.AddWithValue("@PageIndex", pageIndex);
                     cmd.Parameters.AddWithValue("@PageSize", pageSize);
 
@@ -48,7 +49,7 @@ namespace SocialMithila.Controllers
                         {
                             string photo = dr["ProfilePhoto"] == DBNull.Value || string.IsNullOrWhiteSpace(dr["ProfilePhoto"].ToString())
                                 ? "https://cdn-icons-png.flaticon.com/512/149/149071.png"
-                                : "https://socialmithila.com/" + dr["ProfilePhoto"].ToString();
+                                : "https://socialmithila.com" + dr["ProfilePhoto"].ToString();
 
                             users.Add(new
                             {
@@ -76,6 +77,39 @@ namespace SocialMithila.Controllers
             }
 
             return Json(new { Data = users, TotalCount = totalCount }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetUsersForDropdown()
+        {
+            List<object> userList = new List<object>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand("USP_UserDataForDD", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                con.Open();
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        string profilePhoto = Convert.ToString(dr["ProfilePhoto"]);
+                        string basePhoto = string.IsNullOrWhiteSpace(profilePhoto)
+                            ? "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                            : "https://socialmithila.com/" + profilePhoto.TrimStart('/');
+
+                        userList.Add(new
+                        {
+                            Id = Convert.ToInt32(dr["Id"]),
+                            Text = $"{dr["FirstName"]} {dr["LastName"]} ({dr["Email"]})",
+                            ProfilePhoto = basePhoto
+                        });
+                    }
+                }
+            }
+
+            return Json(userList, JsonRequestBehavior.AllowGet);
         }
     }
 }
