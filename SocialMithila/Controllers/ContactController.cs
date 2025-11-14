@@ -11,7 +11,15 @@ namespace SocialMithila.Controllers
         // GET: Contact
         public ActionResult ContactDataList()
         {
-            return View();
+            if (Session["AdminId"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            
         }
     }
 }

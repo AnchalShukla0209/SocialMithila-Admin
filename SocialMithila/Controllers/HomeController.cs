@@ -1,8 +1,10 @@
-﻿using System;
+﻿using SocialMithila.Models;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -15,13 +17,26 @@ namespace SocialMithila.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            if (Session["AdminId"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
         }
 
         public ActionResult Contact()
         {
-            
-            return View();
+            if (Session["AdminId"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
         }
 
         [HttpGet]
@@ -111,5 +126,112 @@ namespace SocialMithila.Controllers
 
             return Json(userList, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpGet]
+        public JsonResult GetDashboardSummary()
+        {
+            var result = new
+            {
+                success = false
+            };
+
+            var totals = new DashboardDto();
+            var months = new List<MonthlySeriesDto>();
+            using (var conn = new SqlConnection(connectionString))
+            using (var cmd = new SqlCommand("sp_GetDashboardSummary", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                conn.Open();
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    // First result set -> totals (single row)
+                    if (reader.Read())
+                    {
+                        totals.TotalUsers = reader["TotalUsers"] != DBNull.Value ? Convert.ToInt32(reader["TotalUsers"]) : 0;
+                        totals.TotalCategories = reader["TotalCategories"] != DBNull.Value ? Convert.ToInt32(reader["TotalCategories"]) : 0;
+                        totals.TotalSubCategories = reader["TotalSubCategories"] != DBNull.Value ? Convert.ToInt32(reader["TotalSubCategories"]) : 0;
+                        totals.TotalBusinesses = reader["TotalBusinesses"] != DBNull.Value ? Convert.ToInt32(reader["TotalBusinesses"]) : 0;
+                        totals.TotalStories = reader["TotalStories"] != DBNull.Value ? Convert.ToInt32(reader["TotalStories"]) : 0;
+                        totals.TotalPosts = reader["TotalPosts"] != DBNull.Value ? Convert.ToInt32(reader["TotalPosts"]) : 0;
+                    }
+
+                    // Move to next result set -> monthly rows
+                    if (reader.NextResult())
+                    {
+                        while (reader.Read())
+                        {
+                            months.Add(new MonthlySeriesDto
+                            {
+                                MonthLabel = reader["MonthLabel"] != DBNull.Value ? reader["MonthLabel"].ToString() : "",
+                                UsersCount = reader["UsersCount"] != DBNull.Value ? Convert.ToInt32(reader["UsersCount"]) : 0,
+                                BusinessesCount = reader["BusinessesCount"] != DBNull.Value ? Convert.ToInt32(reader["BusinessesCount"]) : 0,
+                                PostsCount = reader["PostsCount"] != DBNull.Value ? Convert.ToInt32(reader["PostsCount"]) : 0
+                            });
+                        }
+                    }
+                }
+            }
+
+            return Json(new
+            {
+                success = true,
+                totals,
+                months
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult AdminLogin(string username, string password)
+        {
+            try
+            {
+                using (SqlConnection cnn = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("SP_AdminLogin", cnn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@UserName", username);
+                        cmd.Parameters.AddWithValue("@Password", password);
+
+                        cnn.Open();
+                        SqlDataReader dr = cmd.ExecuteReader();
+
+                        if (dr.Read())
+                        {
+                            Session["AdminId"] = dr["Id"];
+                            Session["AdminUserName"] = dr["UserName"];
+
+                            return Json(new { success = true, message = "Login successful" });
+                        }
+                        else
+                        {
+                            return Json(new { success = false, message = "Invalid credentials" });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        public ActionResult Logout()
+        {
+            Session.Clear();
+            Session.Abandon();
+            Response.Cookies.Clear();
+            return RedirectToAction("Login", "Home");
+        }
+
     }
+
+
 }

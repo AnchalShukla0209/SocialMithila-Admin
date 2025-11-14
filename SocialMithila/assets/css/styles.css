@@ -8686,10 +8686,10 @@ fieldset:disabled .btn {
 }
 
 .tab-content .tab-pane {
-  padding: 1rem;
-  border: 1px solid var(--default-border);
-  border-radius: 0.4rem;
-  color: var(--default-text-color);
+    padding: 1rem;
+    border: 1px solid #b5025c;
+    border-radius: 0.4rem;
+    color: var(--default-text-color);
 }
 
 /* End:: Tab-style-1 */

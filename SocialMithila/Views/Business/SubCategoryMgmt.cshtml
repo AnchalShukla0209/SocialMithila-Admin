@@ -1,0 +1,681 @@
+﻿
+@{
+    ViewBag.Title = "SubCategoryMgmt";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+    fieldset {
+        background-color: #eeeeee;
+    }
+
+    legend {
+        background-color: gray;
+        color: white;
+        padding: 5px 10px;
+    }
+
+    .custom-gridjs-th {
+        background-color: #794abf !important;
+        color: #fff !important;
+    }
+
+    .disablescss {
+        pointer-events: none;
+        background-color: rgba(0, 0, 0, 0.1);
+        border: 1px solid #ccc;
+    }
+
+    #tblTxnReport th {
+        background: #b5025c !important;
+        color: white !important;
+    }
+
+    td {
+        white-space: nowrap !important;
+    }
+
+    th {
+        white-space: nowrap !important;
+    }
+
+    .fieldsethead {
+        border: 1px groove #b5025c !important;
+        margin: 0;
+        padding: 10px;
+        position: relative;
+        border-radius: 4px;
+        background-color: #f5f5f5;
+        padding-left: 10px !important;
+        margin-top: 5px;
+    }
+
+    .legendhead {
+        margin-top: -2%;
+        font-size: 14px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        margin-bottom: 0px;
+        width: 100%;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px 5px 5px 10px;
+        color: #fff;
+        background: #b5025c;
+    }
+
+    .gridjs-th {
+        background-color: rgb(var(--primary-rgb)) !important;
+        color: #fff !important;
+    }
+
+    .se-pre-con {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: url('../../loader-64x/Cube-1s-63px.gif') center no-repeat transparent;
+        background-color: #0f0e0e;
+        opacity: 0.5;
+    }
+
+    .modal-header {
+        background: #eeee !important;
+    }
+
+    body {
+        font-family: 'Segoe UI', sans-serif !important;
+    }
+
+    .modal-header {
+        background: #b5025c !important;
+        color: white !important
+    }
+
+    .btn-close {
+        color: white !important;
+        font-weight: 900;
+    }
+
+    .modal-title {
+        color: white !important
+    }
+
+    .btn-primary {
+        background: #b5025c !important
+    }
+
+    .modal-content {
+        border-radius: 6px !important;
+    }
+
+    .btn-primary:hover {
+        background-color: #b5025c !important;
+        border-color: rgb(var(--primary-rgb));
+        color: #fff;
+    }
+
+    .pagination {
+        display: flex;
+        padding-left: 0;
+        list-style: none;
+    }
+
+    .page-link {
+        position: relative;
+        display: block;
+        color: #b5025c;
+        text-decoration: none;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .page-link {
+            transition: none;
+        }
+    }
+
+    .page-link:hover {
+        z-index: 2;
+        color: #185dca;
+        background-color: #e9ecef;
+        border-color: #dee2e6;
+    }
+
+    .page-link:focus {
+        z-index: 3;
+        color: #185dca;
+        background-color: #e9ecef;
+        outline: 0;
+        box-shadow: 0 0 0 0rem rgba(30, 116, 253, 0.25);
+    }
+
+    .page-item:not(:first-child) .page-link {
+        margin-left: -1px;
+    }
+
+    .page-item.active .page-link {
+        z-index: 3;
+        color: #fff;
+        background-color: #b5025c;
+        border-color: #b5025c;
+    }
+
+    .page-item.disabled .page-link {
+        color: #6c757d;
+        pointer-events: none;
+        background-color: #fff;
+        border-color: #dee2e6;
+    }
+
+    .page-link {
+        padding: 0.375rem 0.75rem;
+    }
+
+    .page-item:first-child .page-link {
+        border-top-left-radius: 0.25rem;
+        border-bottom-left-radius: 0.25rem;
+    }
+
+    .page-item:last-child .page-link {
+        border-top-right-radius: 0.25rem;
+        border-bottom-right-radius: 0.25rem;
+    }
+
+    .pagination-lg .page-link {
+        padding: 0.75rem 1.5rem;
+        font-size: 1.25rem;
+    }
+
+    .pagination-lg .page-item:first-child .page-link {
+        border-top-left-radius: 0.3rem;
+        border-bottom-left-radius: 0.3rem;
+    }
+
+    .pagination-lg .page-item:last-child .page-link {
+        border-top-right-radius: 0.3rem;
+        border-bottom-right-radius: 0.3rem;
+    }
+
+    .pagination-sm .page-link {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .pagination-sm .page-item:first-child .page-link {
+        border-top-left-radius: 0.2rem;
+        border-bottom-left-radius: 0.2rem;
+    }
+
+    .pagination-sm .page-item:last-child .page-link {
+        border-top-right-radius: 0.2rem;
+        border-bottom-right-radius: 0.2rem;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 0.35em 0.65em;
+        font-size: 0.75em;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 0.25rem;
+    }
+
+        .badge:empty {
+            display: none;
+        }
+
+    .btn .badge {
+        position: relative;
+        top: -1px;
+    }
+
+    .custom-gridjs-th {
+        background-color: #b5025c !important;
+        color: #fff !important;
+    }
+</style>
+
+<div class="main-content app-content">
+    <div class="container-fluid">
+        <!-- row -->
+        <!-- row -->
+        <div class="row row-sm ">
+            <div class="col-md-12 col-xl-12">
+
+                <div id="dvloader" class="se-pre-con" style="display:none"></div>
+
+                <div class="card overflow-hidden review-project">
+                    <div class="card-body">
+                        <fieldset class="fieldsethead">
+                            <legend class="legendhead">
+                                Filter
+                                <button style="float: right !important; background: white !important; color: #b5025c !important" class="btn btn-primary btn-sm"  id="btnAddSubCategory">Add Sub-Category</button>
+                            </legend>
+                            <br />
+                            <div class="row">
+                                <div class="col-xl-4">
+                                    <div class="">
+                                        <div class="">
+                                            <label class="fw-semibold mb-2">Select Category:</label>
+                                            <select multiple class="form-select select2" id="ddlCategoryIds" style="width:100%">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4">
+                                    <div class="">
+                                        <div class="">
+                                            <label class="fw-semibold mb-2">Sub Category:</label>
+                                            <input class="form-control" id="txtSubCategory" placeholder="Enter Sub Category" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4">
+                                    <div class="">
+                                        <div class="">
+                                            <label class="fw-semibold mb-2">Status:</label>
+                                            <select class="form-control" data-trigger name="choices-single-default" id="ddlStatus">
+                                                <option value="">--Status--</option>
+                                                <option value="Active">Active</option>
+                                                <option value="Inactive">Inactive</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4" style="margin-top:10px">
+                                    <div class="">
+                                        <div class="">
+                                            <div class="input-group">
+
+                                                <button class="btn btn-primary btn-block" id="btnSearch" title="Search" style="border-radius:7px" type="button">Search</button>
+                                                &nbsp;&nbsp;
+                                                <button class="btn btn-danger btn-block" id="btnReset" title="Reset" style="border-radius:7px" type="button">Reset</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </fieldset>
+
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="card custom-card">
+
+                                    <div class="card-body">
+                                        <div id="grid-search">
+                                            <div role="complementary" class="gridjs gridjs-container" style="width: 100%;">
+                                                <div class="row">
+                                                    <div class="col-xl-12">
+                                                        <div class="card custom-card">
+
+                                                            <div class="card-body p-0">
+                                                                <div class="table-responsive">
+                                                                    <table class="table text-nowrap table-bordered">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th scope="col" class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Sr No</th>
+                                                                                <th scope="col" class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Category Name</th>
+                                                                                <th scope="col" class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Sub-Category Name</th>
+                                                                                <th scope="col" class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Status</th>
+                                                                                <th scope="col" class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Action</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="tblUserData">
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div id="paginationContainer" class="d-flex justify-content-end align-items-center mb-4" style="padding:5px"></div>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="SubCategoryMgmt" tabindex="-1" aria-labelledby="SubCategoryMgmtLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="TxnrefundModalLabelLabel">Sub-Category Management <span id="txtTxnDet">Add/Update</span></h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label>Category Name</label>
+                <select class="form-control" id="ddlCategoryName"></select>
+                <label>Sub-Category Name</label>
+                <input type="text" id="txtSubCategoryName" class="form-control" />
+                <div id="divStatusModal">
+                    <!-- wrapper div -->
+                    <label>Status</label>
+                    <select class="form-control" id="ddlStatusModal">
+                        <option value="">Select</option>
+                        <option value="1">Active</option>
+                        <option value="0">Inactive</option>
+                    </select>
+                </div>
+                <input type="hidden" id="hdnSubCategoryId" class="form-control" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal">
+                    CLOSE
+                </button>
+                <button type="button" id="btnSaveOrUpdate" class="btn btn-success btn-sm">
+                    SUBMIT
+                </button>
+               
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script type="text/javascript">
+    var count = 0;
+    var currentPage = 1;
+    var pageSize = 5;
+
+    $(document).ready(function () {
+        BindCategory();
+        BindCategoryforDD();
+        loadSubCategories(1);
+
+        $('#btnSearch').click(function () {
+            loadSubCategories(1);
+        });
+
+
+            $('#btnReset').click(function () {
+                $('#ddlCategoryIds').val(null).trigger('change');
+                $('#txtSubCategory').val('');
+                $('#txtfromDate').val('');
+                $('#toDate').val('');
+                $('#ddlStatus').val('');
+                loadSubCategories(1);
+            });
+
+    });
+
+    $(document).on('click', '#btnAddSubCategory', function () {
+        openModalForAdd();
+    });
+
+    $(document).on('click', '#btnSaveOrUpdate', function () {
+        submitSaveOrUpdate();
+    });
+
+    $(document).on('click', '.btn-edit', function () {
+        var id = $(this).data('id');
+        openModalForEdit(id);
+    });
+
+    $(document).on('click', '.btn-delete', function () {
+            var id = $(this).data('id');
+            if (!confirm('Are you sure you want to delete this sub-category?')) return;
+            $.post('@Url.Action("Delete", "Business")', { id: id }, function (res) {
+                if (res.Success) {
+                    alert('Deleted successfully.');
+                    loadSubCategories(currentPage);
+                } else {
+                    alert('Delete failed: ' + (res.Message || ''));
+                }
+            });
+        });
+
+
+
+    function formatUserSelection(user) {
+        return user.text;
+    }
+
+    function BindCategory() {
+        $.ajax({
+            url: '/Business/GetCategoryForDropdown',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                if (data && data.length > 0) {
+                    $('#ddlCategoryIds').empty();
+                    $.each(data, function (i, item) {
+                        const optionHtml = `
+                        <option value="${item.Id}">
+                            ${item.Text}
+                        </option>`;
+                        $('#ddlCategoryIds').append(optionHtml);
+                    });
+
+                    // Initialize Select2 with images
+                    $('#ddlCategoryIds').select2({
+                        templateSelection: formatUserSelection
+                    });
+                }
+            },
+            error: function (xhr) {
+                console.error('Error loading users:', xhr);
+            }
+        })
+    }
+
+    function BindCategoryforDD() {
+        $.ajax({
+            url: '/Business/GetCategoryForDropdown',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                if (data && data.length > 0) {
+                    $('#ddlCategoryName').empty();
+                    $.each(data, function (i, item) {
+                        const optionHtml = `
+                    <option value="${item.Id}">
+                        ${item.Text}
+                    </option>`;
+                        $('#ddlCategoryName').append(optionHtml);
+                    });
+                }
+            },
+            error: function (xhr) {
+                console.error('Error loading users:', xhr);
+            }
+        })
+    }
+
+     function loadSubCategories(pageIndex) {
+        currentPage = pageIndex;
+        var categoryIds = $('#ddlCategoryIds').val() ? $('#ddlCategoryIds').val().join(',') : null;
+        var subCategoryName = $('#txtSubCategory').val();
+        var status = $('#ddlStatus').val(); // "Active"/"Inactive" or empty
+
+        $.ajax({
+            url: '@Url.Action("GetSubCategories", "Business")',
+            data: {
+                categoryIds: categoryIds,
+                subCategoryName: subCategoryName,
+                status: status,
+                pageIndex: pageIndex,
+                pageSize: pageSize
+            },
+            dataType: 'json',
+            success: function (res) {
+                renderTable(res.Data);
+                var totalPages = Math.ceil(res.TotalCount / pageSize);
+                renderPagination(currentPage, totalPages);
+            },
+            error: function (err) {
+                alert('Error fetching data.');
+            }
+        });
+    }
+
+    function renderTable(rows) {
+        var $tbody = $('#tblUserData');
+        $tbody.empty();
+        if (!rows || rows.length === 0) {
+            $tbody.html('<tr><td colspan="5" class="text-center">No records found</td></tr>');
+            return;
+        }
+
+        $.each(rows, function (i, r) {
+            var statusBadge = r.IsActive ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>';
+            var tr = '<tr>';
+            tr += '<td>' + r.SrNo + '</td>';
+            tr += '<td>' + escapeHtml(r.CategoryName) + '</td>';
+            tr += '<td>' + escapeHtml(r.SubCategoryName) + '</td>';
+            tr += '<td>' + statusBadge + '</td>';
+            tr += '<td>';
+            tr += '<a href="javascript:void(0);" class="btn btn-icon btn-sm btn-info btn-edit" data-id="' + r.SubCategoryId + '"><i class="ri-edit-line"></i></a> ';
+            tr += '<a href="javascript:void(0);" class="btn btn-icon btn-sm btn-danger btn-delete" data-id="' + r.SubCategoryId + '"><i class="ri-delete-bin-line"></i></a>';
+            tr += '</td>';
+            tr += '</tr>';
+            $tbody.append(tr);
+        });
+    }
+
+    function renderPagination(currentPage, totalPages) {
+        var $container = $('#paginationContainer');
+        $container.empty();
+        if (totalPages <= 1) return;
+
+        var html = '<nav><ul class="pagination pagination-sm mb-0">';
+        if (currentPage === 1) html += '<li class="page-item disabled"><a class="page-link">Previous</a></li>';
+        else html += '<li class="page-item"><a class="page-link" href="#" data-page="' + (currentPage - 1) + '">Previous</a></li>';
+
+        var start = Math.max(1, currentPage - 2);
+        var end = Math.min(totalPages, currentPage + 2);
+        if (start > 1) html += '<li class="page-item"><a class="page-link" href="#" data-page="1">1</a></li>';
+        if (start > 2) html += '<li class="page-item disabled"><a class="page-link">...</a></li>';
+
+        for (var i = start; i <= end; i++) {
+            if (i === currentPage) html += '<li class="page-item active"><a class="page-link" href="#">' + i + '</a></li>';
+            else html += '<li class="page-item"><a class="page-link" href="#" data-page="' + i + '">' + i + '</a></li>';
+        }
+
+        if (end < totalPages - 1) html += '<li class="page-item disabled"><a class="page-link">...</a></li>';
+        if (end < totalPages) html += '<li class="page-item"><a class="page-link" href="#" data-page="' + totalPages + '">' + totalPages + '</a></li>';
+
+        if (currentPage === totalPages) html += '<li class="page-item disabled"><a class="page-link">Next</a></li>';
+        else html += '<li class="page-item"><a class="page-link" href="#" data-page="' + (currentPage + 1) + '">Next</a></li>';
+
+        html += '</ul></nav>';
+        $container.html(html);
+
+        // handle page clicks
+        $container.find('a.page-link[data-page]').off('click').on('click', function (e) {
+            e.preventDefault();
+            var p = parseInt($(this).data('page'));
+            if (!isNaN(p)) loadSubCategories(p);
+        });
+    }
+
+    // Open modal for Add
+    function openModalForAdd() {
+        $('#hdnSubCategoryId').val('');
+        $('#ddlCategoryName').val('').trigger('change');
+        $('#txtSubCategoryName').val('');
+        $('#ddlStatusModal').closest('div').hide(); // hide status in Add
+        $('#txtTxnDet').text('Add'); // optional text change
+        $('#btnSaveOrUpdate').text('Save');
+        $('#SubCategoryMgmt').modal('show');
+    }
+
+    // Open modal for Edit
+    function openModalForEdit(id) {
+        $.getJSON('@Url.Action("GetSubCategoryById", "Business")', { id: id }, function (res) {
+            if (!res || !res.SubCategoryId) {
+                alert('Record not found');
+                return;
+            }
+            $('#hdnSubCategoryId').val(res.SubCategoryId);
+            $('#ddlCategoryName').val(res.CategoryId);
+            $('#txtSubCategoryName').val(res.SubCategoryName);
+            $('#ddlStatusModal').val(res.IsActive ? '1' : '0');
+            $('#ddlStatusModal').closest('div').show(); // show status in update
+            $('#txtTxnDet').text('Update'); // optional text change
+            $('#btnSaveOrUpdate').text('Update');
+            $('#SubCategoryMgmt').modal('show');
+        }).fail(function () {
+            alert('Failed to load record.');
+        });
+    }
+
+    function submitSaveOrUpdate() {
+        var id = $('#hdnSubCategoryId').val();
+        var categoryId = $('#ddlCategoryName').val();
+        var subCategoryName = $('#txtSubCategoryName').val();
+        var isActive = null;
+        if ($('#ddlStatusModal').is(':visible')) {
+            isActive = $('#ddlStatusModal').val();
+        }
+
+        if (!categoryId) { alert('Please select Category'); return; }
+        if (!subCategoryName || subCategoryName.trim().length === 0) { alert('Enter Sub Category'); return; }
+
+        $.post('@Url.Action("Save", "Business")',
+            {
+                subCategoryId: id ? id : 0,
+                categoryId: categoryId,
+                subCategoryName: subCategoryName,
+                isActive: isActive !== null ? isActive : null
+            },
+            function (res) {
+                if (!res) { alert('No response'); return; }
+                if (res.Success) {
+                    $('#SubCategoryMgmt').modal('hide');
+                    loadSubCategories(currentPage);
+                    alert('Saved successfully.');
+                } else {
+                    alert('Save failed: ' + (res.Message || ''));
+                }
+            }, 'json')
+            .fail(function (xhr) {
+                var msg = xhr.responseText || 'Error saving';
+                alert(msg);
+            });
+    }
+
+    // utility
+    function escapeHtml(text) {
+        if (!text) return '';
+        return text.replace(/[\"&'\/<>]/g, function (a) {
+            return {
+                '"': '&quot;', '&': '&amp;', "'": '&#39;', '/': '&#47;', '<': '&lt;', '>': '&gt;'
+            }[a];
+        });
+    }
+
+</script>
+
+
+

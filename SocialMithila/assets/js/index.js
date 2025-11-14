@@ -196,7 +196,7 @@ function trendingBusinessChart() {
                 }
             }
         },
-        colors: ["#0d6efd", "#dc3545", "#28a745"], // Blue, Red, Green gradients
+        colors: ["#b5025c", "#dc3545", "#28a745"], // Blue, Red, Green gradients
     };
 
     document.querySelector("#trendingchart").innerHTML = "";

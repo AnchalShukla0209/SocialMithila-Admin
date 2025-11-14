@@ -126,6 +126,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DashboardDto.cs" />
+    <Compile Include="Models\MonthlySeriesDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -15615,6 +15617,7 @@
     <Content Include="assets\libs\swiper\vue\swiper.js" />
     <Content Include="assets\libs\swiper\vue\virtual.js" />
     <Content Include="assets\libs\wnumb\wNumb.min.js" />
+    <Content Include="assets\Logo\logowithoutbg.png" />
     <Content Include="assets\SocialMithila\Logo\logo.png" />
     <Content Include="assets\video\1.mp4" />
     <Content Include="Content\bootstrap-grid.css" />
@@ -17610,6 +17613,9 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Contact\ContactDataList.cshtml" />
     <Content Include="Views\Business\CategoryMgmt.cshtml" />
+    <Content Include="Views\Business\SubCategoryMgmt.cshtml" />
+    <Content Include="Views\Business\BusinessMgmt.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -17634,7 +17640,6 @@
     <Folder Include="assets\libs\swiper\angular\angular\src\" />
     <Folder Include="assets\libs\swiper\angular\esm2020\angular\src\" />
     <Folder Include="assets\libs\swiper\types\modules\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

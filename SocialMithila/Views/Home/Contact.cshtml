@@ -27,7 +27,7 @@
     }
 
     #tblTxnReport th {
-        background: #5e2f82 !important;
+        background: #b5025c!important;
         color: white !important;
     }
 
@@ -90,7 +90,7 @@
     }
 
     .modal-header {
-        background: #5e2f82 !important;
+        background: #b5025c!important;
         color: white !important
     }
 
@@ -104,7 +104,7 @@
     }
 
     .btn-primary {
-        background: #5e2f82 !important
+        background: #b5025c!important
     }
 
     .modal-content {
@@ -112,9 +112,135 @@
     }
 
     .btn-primary:hover {
-        background-color: #5e2f82 !important;
+        background-color: #b5025c!important;
         border-color: rgb(var(--primary-rgb));
         color: #fff;
+    }
+
+    .pagination {
+        display: flex;
+        padding-left: 0;
+        list-style: none;
+    }
+
+    .page-link {
+        position: relative;
+        display: block;
+        color: #b5025c;
+        text-decoration: none;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .page-link {
+            transition: none;
+        }
+    }
+
+    .page-link:hover {
+        z-index: 2;
+        color: #185dca;
+        background-color: #e9ecef;
+        border-color: #dee2e6;
+    }
+
+    .page-link:focus {
+        z-index: 3;
+        color: #185dca;
+        background-color: #e9ecef;
+        outline: 0;
+        box-shadow: 0 0 0 0rem rgba(30, 116, 253, 0.25);
+    }
+
+    .page-item:not(:first-child) .page-link {
+        margin-left: -1px;
+    }
+
+    .page-item.active .page-link {
+        z-index: 3;
+        color: #fff;
+        background-color: #b5025c;
+        border-color: #b5025c;
+    }
+
+    .page-item.disabled .page-link {
+        color: #6c757d;
+        pointer-events: none;
+        background-color: #fff;
+        border-color: #dee2e6;
+    }
+
+    .page-link {
+        padding: 0.375rem 0.75rem;
+    }
+
+    .page-item:first-child .page-link {
+        border-top-left-radius: 0.25rem;
+        border-bottom-left-radius: 0.25rem;
+    }
+
+    .page-item:last-child .page-link {
+        border-top-right-radius: 0.25rem;
+        border-bottom-right-radius: 0.25rem;
+    }
+
+    .pagination-lg .page-link {
+        padding: 0.75rem 1.5rem;
+        font-size: 1.25rem;
+    }
+
+    .pagination-lg .page-item:first-child .page-link {
+        border-top-left-radius: 0.3rem;
+        border-bottom-left-radius: 0.3rem;
+    }
+
+    .pagination-lg .page-item:last-child .page-link {
+        border-top-right-radius: 0.3rem;
+        border-bottom-right-radius: 0.3rem;
+    }
+
+    .pagination-sm .page-link {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .pagination-sm .page-item:first-child .page-link {
+        border-top-left-radius: 0.2rem;
+        border-bottom-left-radius: 0.2rem;
+    }
+
+    .pagination-sm .page-item:last-child .page-link {
+        border-top-right-radius: 0.2rem;
+        border-bottom-right-radius: 0.2rem;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 0.35em 0.65em;
+        font-size: 0.75em;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 0.25rem;
+    }
+
+        .badge:empty {
+            display: none;
+        }
+
+    .btn .badge {
+        position: relative;
+        top: -1px;
+    }
+
+    .custom-gridjs-th {
+        background-color: #b5025c !important;
+        color: #fff !important;
     }
 </style>
 
@@ -136,19 +262,8 @@
                                 <div class="col-xl-3">
                                     <div class="">
                                         <div class="">
-                                            <select multiple class="form-select" id="ddlUserIds">
-                                                <option value="All Service">All Service</option>
-                                                <option value="Recharge">Mobile Recharge</option>
-                                                <option value="AEPS">AEPS</option>
-                                                <option value="MATM">MATM</option>
-                                                <option value="DTH">DTH</option>
-                                                <option value="ELECTRICITY">ELECTRICITY</option>
-                                                <option value="DMT">DMT</option>
-                                                <option value="UPI">UPI</option>
-                                                <option value="QR CODE">QR CODE</option>
-                                                <option value="ONLINE PAYMENT">ONLINE PAYMENT</option>
-                                                <option value="LESSER REPORT">LESSER REPORT</option>
-                                                <option value="ADMIN LESSER REPORT">ADMIN LESSER REPORT</option>
+                                            <label class="fw-semibold mb-2">Select User:</label>
+                                            <select multiple class="form-select select2" id="ddlUserIds" style="width:100%">
                                             </select>
                                         </div>
                                     </div>
@@ -157,6 +272,7 @@
                                     <div class="">
                                         <div class="">
                                             <div class="form-group">
+                                                <label class="fw-semibold mb-2">From Date:</label>
                                                 <div class="input-group">
                                                     <div class="input-group-text text-muted"> <i class="ri-calendar-line"></i> </div>
                                                     <input type="date" class="form-control" id="txtfromDate" placeholder="Choose date ">
@@ -169,6 +285,7 @@
                                     <div class="">
                                         <div class="">
                                             <div class="form-group">
+                                                <label class="fw-semibold mb-2">To Date:</label>
                                                 <div class="input-group">
                                                     <div class="input-group-text text-muted"> <i class="ri-calendar-line"></i> </div>
                                                     <input type="date" class="form-control" id="toDate" placeholder="Choose date ">
@@ -180,6 +297,7 @@
                                 <div class="col-xl-3">
                                     <div class="">
                                         <div class="">
+                                            <label class="fw-semibold mb-2">Status:</label>
                                             <select class="form-control" data-trigger name="choices-single-default" id="ddlStatus">
                                                 <option value="">--Status--</option>
                                                 <option value="Active">Active</option>
@@ -189,23 +307,14 @@
                                     </div>
                                 </div>
 
-                                <div class="col-xl-3">
-                                    <div class="">
-                                        <div class="">
-                                            <p class="fw-semibold mb-2">Select User:</p>
-                                            <select class="js-example-basic-single select2-hidden-accessible" name="choices-single-default" id="ddlUsers">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-2" style="margin-top:30px">
+                                <div class="col-xl-4" style="margin-top:10px">
                                     <div class="">
                                         <div class="">
                                             <div class="input-group">
 
-                                                <button class="btn btn-primary btn-block" id="btnSearch" title="Search" style="border-radius:7px" type="button"><i class="fa fa-search" style="font-size:17px" aria-hidden="true"></i></button>
+                                                <button class="btn btn-primary btn-block" id="btnSearch" title="Search" style="border-radius:7px" type="button">Search</button>
                                                 &nbsp;&nbsp;
-                                                <button class="btn btn-danger btn-block" title="Export To Excel" style="border-radius:7px" type="button"><i class="fa fa-file-excel" style="font-size:17px" aria-hidden="true"></i></button>
+                                                <button class="btn btn-danger btn-block" id="btnReset" title="Reset" style="border-radius:7px" type="button">Reset</button>
                                             </div>
                                         </div>
                                     </div>
@@ -234,80 +343,32 @@
                                     <div class="card-body">
                                         <div id="grid-search">
                                             <div role="complementary" class="gridjs gridjs-container" style="width: 100%;">
-                                               
+
 
                                                 <div class="row">
                                                     <div class="col-xl-12">
                                                         <div class="card custom-card">
-                                                            <div class="card-header">
-                                                                <div class="card-title">
-                                                                    User Data
-                                                                </div>
-                                                            </div>
+                                                         
                                                             <div class="card-body p-0">
                                                                 <div class="table-responsive">
-                                                                    <table class="table text-nowrap">
+                                                                    <table class="table text-nowrap table-bordered">
                                                                         <thead>
                                                                             <tr>
-                                                                                <th scope="col">Sr No</th>
-                                                                                <th scope="col">User Name</th>
-                                                                                <th scope="col">Email ID</th>
-                                                                                <th scope="col">Phone No</th>
-                                                                                <th scope="col">Country</th>
-                                                                                <th scope="col">Address</th>
-                                                                                <th scope="col">Town City</th>
-                                                                                <th scope="col">Post Code</th>
-                                                                                <th scope="col">Descreption</th>
-                                                                                <th scope="col">Active</th>
-                                                                                <th scope="col">Registered On</th>
-                                                                                <th scope="col">Action</th>
+                                                                                <th scope="col" class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Sr No</th>
+                                                                                <th scope="col" class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">User Name</th>
+                                                                                <th scope="col" class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Email ID</th>
+                                                                                <th scope="col" class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Phone No</th>
+                                                                                <th scope="col" class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Country</th>
+                                                                                <th scope="col" class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Address</th>
+                                                                                <th scope="col" class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Town City</th>
+                                                                                <th scope="col" class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Post Code</th>
+                                                                                <th scope="col" class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Descreption</th>
+                                                                                <th scope="col" class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Active</th>
+                                                                                <th scope="col" class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Registered On</th>
+                                                                                <th scope="col" class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Action</th>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody id="tblUserData">
-
-                                                                            <tr>
-                                                                                <th scope="row"><input class="form-check-input" type="checkbox" id="checkboxNoLabel1" value="" aria-label="..."></th>
-                                                                                <td>
-                                                                                    <div class="d-flex align-items-center">
-                                                                                        <span class="avatar avatar-xs me-2 online avatar-rounded">
-                                                                                            <img src="../assets/images/faces/3.jpg" alt="img">
-                                                                                        </span>Mayor Kelly
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td>mayorkrlly@gmail.com</td>
-                                                                                <td>Manufacturer</td>
-                                                                                <td><span class="badge bg-primary-transparent">Team Lead</span></td>
-                                                                                <td>
-                                                                                    <div class="progress progress-xs">
-                                                                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 52%" aria-valuenow="52" aria-valuemin="0" aria-valuemax="100">
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td>$10,984.29</td>
-                                                                                <td>
-                                                                                    <div class="avatar-list-stacked">
-                                                                                        <span class="avatar avatar-sm avatar-rounded">
-                                                                                            <img src="../assets/images/faces/2.jpg" alt="img">
-                                                                                        </span>
-                                                                                        <span class="avatar avatar-sm avatar-rounded">
-                                                                                            <img src="../assets/images/faces/8.jpg" alt="img">
-                                                                                        </span>
-                                                                                        <span class="avatar avatar-sm avatar-rounded">
-                                                                                            <img src="../assets/images/faces/2.jpg" alt="img">
-                                                                                        </span>
-                                                                                        <a class="avatar avatar-sm bg-primary text-fixed-white avatar-rounded" href="javascript:void(0);">
-                                                                                            +4
-                                                                                        </a>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <div class="hstack gap-2 fs-15">
-                                                                                        <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-success"><i class="ri-download-2-line"></i></a>
-                                                                                        <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-info"><i class="ri-edit-line"></i></a>
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>
-                                                                            
                                                                         </tbody>
                                                                     </table>
                                                                 </div>
@@ -316,16 +377,17 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="gridjs-footer">
-                                                    <div class="gridjs-pagination">
+                                                <div id="paginationContainer" class="d-flex justify-content-end align-items-center mb-4" style="padding:5px"></div>
+                                                <!--<div class="gridjs-footer">
+                                                <div class="gridjs-pagination">
 
-                                                        <div class="gridjs-pages" id="paginationContainer">
-                                                            @*<button tabindex="0" role="button" disabled="" title="Previous" aria-label="Previous" class="">Previous</button>
-                    <button tabindex="0" role="button" class="gridjs-currentPage" title="Page 1" aria-label="Page 1">1</button>
-                    <button tabindex="0" role="button" disabled="" title="Next" aria-label="Next" class="">Next</button>*@
-                                                        </div>
+                                                    <div class="gridjs-pages" id="paginationContainer">-->
+                                                @*<button tabindex="0" role="button" disabled="" title="Previous" aria-label="Previous" class="">Previous</button>
+                                                    <button tabindex="0" role="button" class="gridjs-currentPage" title="Page 1" aria-label="Page 1">1</button>
+                                                    <button tabindex="0" role="button" disabled="" title="Next" aria-label="Next" class="">Next</button>*@
+                                                <!--</div>
                                                     </div>
-                                                </div><div id="gridjs-temp" class="gridjs-temp"></div>
+                                                </div><div id="gridjs-temp" class="gridjs-temp"></div>-->
                                             </div>
                                         </div>
                                     </div>
@@ -447,17 +509,78 @@
     </div>
 </div>
 
-
-<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script type="text/javascript">
+    var count = 0;
     $(document).ready(function () {
+        BindUsers();
         loadUsers(1);
 
-        $('#btnFilter').click(function () {
+        $('#btnSearch').click(function () {
             loadUsers(1);
         });
+
+       
+            $('#btnReset').click(function () {
+                // Reset dropdowns
+                $('#ddlUserIds').val(null).trigger('change'); // For multi-select (Select2)
+                $('#ddlStatus').val('');
+
+                // Reset date fields
+                $('#txtfromDate').val('');
+                $('#toDate').val('');
+
+                // Optionally reload default list
+                loadUsers(1);
+            });
+
     });
+
+    function formatUser(user) {
+        if (!user.id) return user.text;
+        const img = $(user.element).data('image');
+        const $user = $(
+            `<span><img src="${img}" class="img-circle" style="width:25px; height:25px; margin-right:8px;"> ${user.text}</span>`
+        );
+        return $user;
+    }
+
+    function formatUserSelection(user) {
+        return user.text;
+    }
+
+    function BindUsers() {
+        $.ajax({
+            url: '/Home/GetUsersForDropdown',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                if (data && data.length > 0) {
+                    $('#ddlUserIds').empty();
+                    $.each(data, function (i, item) {
+                        const optionHtml = `
+                        <option value="${item.Id}" 
+                            data-image="${item.ProfilePhoto}">
+                            ${item.Text}
+                        </option>`;
+                        $('#ddlUserIds').append(optionHtml);
+                    });
+
+                    // Initialize Select2 with images
+                    $('#ddlUserIds').select2({
+                        templateResult: formatUser,
+                        templateSelection: formatUserSelection
+                    });
+                }
+            },
+            error: function (xhr) {
+                console.error('Error loading users:', xhr);
+            }
+        })
+    }
 
     function loadUsers(pageIndex) {
         var userIds = $('#ddlUserIds').val() ? $('#ddlUserIds').val().join(',') : null;
@@ -466,7 +589,7 @@
         var status = $('#ddlStatus').val();
 
         $.ajax({
-            url: '/User/GetUserList',
+            url: '/Home/GetUserList',
             type: 'GET',
             dataType: 'json',
             data: {
@@ -480,12 +603,13 @@
             success: function (response) {
                 var rows = '';
                 $.each(response.Data, function (i, user) {
+                    count++;
                     var statusBadge = user.IsActive
                         ? '<span class="badge bg-success">Active</span>'
                         : '<span class="badge bg-danger">Inactive</span>';
 
                     rows += `<tr>
-                    <td><input type="checkbox" class="form-check-input"></td>
+                    <td>${count}</td>
                     <td>
                         <div class="d-flex align-items-center">
                             <span class="avatar avatar-xs me-2 avatar-rounded">
@@ -494,19 +618,25 @@
                         </div>
                     </td>
                     <td>${user.Email ?? ''}</td>
+                    <td>${user.Phone}</td>
+                    <td>${user.Country}</td>
+                    <td>${user.Address}</td>
+                    <td>${user.TownCity}</td>
+                    <td>${user.PostCode}</td>
+                    <td>${user.Description}</td>
                     <td>${statusBadge}</td>
                     <td>${user.CreatedOn}</td>
                     <td>
                         <div class="hstack gap-2 fs-15">
                             <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-info"><i class="ri-edit-line"></i></a>
-                            <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-success"><i class="ri-download-2-line"></i></a>
                         </div>
                     </td>
                 </tr>`;
                 });
 
-                $('#tblUserList tbody').html(rows);
-                generatePagination(response.TotalCount, pageIndex, 5);
+                $('#tblUserData').html(rows);
+                let totalPages = Math.ceil(response.TotalCount / 5);
+                $('#paginationContainer').html(getPaginationHtml(pageIndex, totalPages));
             },
             error: function (err) {
                 alert('Error fetching data.');
@@ -514,16 +644,50 @@
         });
     }
 
-    function generatePagination(total, currentPage, pageSize) {
-        var totalPages = Math.ceil(total / pageSize);
-        var pagination = '';
-        for (var i = 1; i <= totalPages; i++) {
-            pagination += `<li class="page-item ${i === currentPage ? 'active' : ''}">
-                           <a class="page-link" href="javascript:void(0);" onclick="loadUsers(${i})">${i}</a>
-                       </li>`;
+    function getPaginationHtml(currentPage, totalPages) {
+        let paginationHtml = '<nav><ul class="pagination pagination-sm mb-0" style="padding:10px">';
+
+        // Previous button
+        if (currentPage === 1)
+            paginationHtml += '<li class="page-item disabled"><a class="page-link">Previous</a></li>';
+        else
+            paginationHtml += `<li class="page-item"><a class="page-link" href="#" onclick="loadUsers(${currentPage - 1})">Previous</a></li>`;
+
+        // Page window
+        let start = Math.max(1, currentPage - 2);
+        let end = Math.min(totalPages, currentPage + 2);
+
+        if (start > 1) {
+            paginationHtml += `<li class="page-item"><a class="page-link" href="#" onclick="loadUsers(1)">1</a></li>`;
         }
-        $('#pagination').html(pagination);
+        if (start > 2) {
+            paginationHtml += '<li class="page-item disabled"><a class="page-link">...</a></li>';
+        }
+
+        for (let i = start; i <= end; i++) {
+            if (i === currentPage)
+                paginationHtml += `<li class="page-item active"><a class="page-link" href="#">${i}</a></li>`;
+            else
+                paginationHtml += `<li class="page-item"><a class="page-link" href="#" onclick="loadUsers(${i})">${i}</a></li>`;
+        }
+
+        if (end < totalPages - 1) {
+            paginationHtml += '<li class="page-item disabled"><a class="page-link">...</a></li>';
+        }
+        if (end < totalPages) {
+            paginationHtml += `<li class="page-item"><a class="page-link" href="#" onclick="loadUsers(${totalPages})">${totalPages}</a></li>`;
+        }
+
+        // Next button
+        if (currentPage === totalPages)
+            paginationHtml += '<li class="page-item disabled"><a class="page-link">Next</a></li>';
+        else
+            paginationHtml += `<li class="page-item"><a class="page-link" href="#" onclick="loadUsers(${currentPage + 1})">Next</a></li>`;
+
+        paginationHtml += '</ul></nav>';
+        return paginationHtml;
     }
+
 </script>
 
 

@@ -1,0 +1,1002 @@
+﻿
+@{
+    ViewBag.Title = "BusinessMgmt";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    fieldset {
+        background-color: #eeeeee;
+    }
+
+    legend {
+        background-color: gray;
+        color: white;
+        padding: 5px 10px;
+    }
+
+    .custom-gridjs-th {
+        background-color: #794abf !important;
+        color: #fff !important;
+    }
+
+    .disablescss {
+        pointer-events: none;
+        background-color: rgba(0, 0, 0, 0.1);
+        border: 1px solid #ccc;
+    }
+
+    #tblTxnReport th {
+        background: #b5025c !important;
+        color: white !important;
+    }
+
+    td {
+        white-space: nowrap !important;
+    }
+
+    th {
+        white-space: nowrap !important;
+    }
+
+    .fieldsethead {
+        border: 1px groove #b5025c !important;
+        margin: 0;
+        padding: 10px;
+        position: relative;
+        border-radius: 4px;
+        background-color: #f5f5f5;
+        padding-left: 10px !important;
+        margin-top: 5px;
+    }
+
+    .legendhead {
+        margin-top: -2%;
+        font-size: 14px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        margin-bottom: 0px;
+        width: 100%;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px 5px 5px 10px;
+        color: #fff;
+        background: #b5025c;
+    }
+
+    .gridjs-th {
+        background-color: rgb(var(--primary-rgb)) !important;
+        color: #fff !important;
+    }
+
+    .se-pre-con {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: url('../../loader-64x/Cube-1s-63px.gif') center no-repeat transparent;
+        background-color: #0f0e0e;
+        opacity: 0.5;
+    }
+
+    .modal-header {
+        background: #eeee !important;
+    }
+
+    body {
+        font-family: 'Segoe UI', sans-serif !important;
+    }
+
+    .modal-header {
+        background: #b5025c !important;
+        color: white !important
+    }
+
+    .btn-close {
+        color: white !important;
+        font-weight: 900;
+    }
+
+    .modal-title {
+        color: white !important
+    }
+
+    .btn-primary {
+        background: #b5025c !important
+    }
+
+    .modal-content {
+        border-radius: 6px !important;
+    }
+
+    .btn-primary:hover {
+        background-color: #b5025c !important;
+        border-color: rgb(var(--primary-rgb));
+        color: #fff;
+    }
+
+    .pagination {
+        display: flex;
+        padding-left: 0;
+        list-style: none;
+    }
+
+    .page-link {
+        position: relative;
+        display: block;
+        color: #b5025c;
+        text-decoration: none;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .page-link {
+            transition: none;
+        }
+    }
+
+    .page-link:hover {
+        z-index: 2;
+        color: #185dca;
+        background-color: #e9ecef;
+        border-color: #dee2e6;
+    }
+
+    .page-link:focus {
+        z-index: 3;
+        color: #185dca;
+        background-color: #e9ecef;
+        outline: 0;
+        box-shadow: 0 0 0 0rem rgba(30, 116, 253, 0.25);
+    }
+
+    .page-item:not(:first-child) .page-link {
+        margin-left: -1px;
+    }
+
+    .page-item.active .page-link {
+        z-index: 3;
+        color: #fff;
+        background-color: #b5025c;
+        border-color: #b5025c;
+    }
+
+    .page-item.disabled .page-link {
+        color: #6c757d;
+        pointer-events: none;
+        background-color: #fff;
+        border-color: #dee2e6;
+    }
+
+    .page-link {
+        padding: 0.375rem 0.75rem;
+    }
+
+    .page-item:first-child .page-link {
+        border-top-left-radius: 0.25rem;
+        border-bottom-left-radius: 0.25rem;
+    }
+
+    .page-item:last-child .page-link {
+        border-top-right-radius: 0.25rem;
+        border-bottom-right-radius: 0.25rem;
+    }
+
+    .pagination-lg .page-link {
+        padding: 0.75rem 1.5rem;
+        font-size: 1.25rem;
+    }
+
+    .pagination-lg .page-item:first-child .page-link {
+        border-top-left-radius: 0.3rem;
+        border-bottom-left-radius: 0.3rem;
+    }
+
+    .pagination-lg .page-item:last-child .page-link {
+        border-top-right-radius: 0.3rem;
+        border-bottom-right-radius: 0.3rem;
+    }
+
+    .pagination-sm .page-link {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .pagination-sm .page-item:first-child .page-link {
+        border-top-left-radius: 0.2rem;
+        border-bottom-left-radius: 0.2rem;
+    }
+
+    .pagination-sm .page-item:last-child .page-link {
+        border-top-right-radius: 0.2rem;
+        border-bottom-right-radius: 0.2rem;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 0.35em 0.65em;
+        font-size: 0.75em;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 0.25rem;
+    }
+
+        .badge:empty {
+            display: none;
+        }
+
+    .btn .badge {
+        position: relative;
+        top: -1px;
+    }
+
+    .custom-gridjs-th {
+        background-color: #b5025c !important;
+        color: #fff !important;
+    }
+</style>
+<!-- ==========================
+      FILTER SECTION + PAGE
+=========================== -->
+<div class="main-content app-content">
+    <div class="container-fluid">
+
+        <div class="row row-sm">
+            <div class="col-md-12 col-xl-12">
+
+                <div class="card overflow-hidden review-project">
+                    <div class="card-body">
+
+                        <fieldset class="fieldsethead">
+                            <legend class="legendhead">
+                                Filter
+                                <button id="btnAddBusiness" class="btn btn-primary btn-sm"
+                                        style="float:right; background:white !important; color:#b5025c !important;">
+                                    Add Business
+                                </button>
+                            </legend>
+
+                            <div class="row mt-3">
+
+                                <!-- Category Filter -->
+                                <div class="col-xl-4">
+                                    <label class="fw-semibold mb-2">Select Category:</label>
+                                    <select multiple id="ddlFilterCategory" class="form-select select2" style="width: 100%;"></select>
+                                </div>
+
+                                <!-- Sub Category Filter -->
+                                <div class="col-xl-4">
+                                    <label class="fw-semibold mb-2">Select Sub Category:</label>
+                                    <select multiple id="ddlFilterSubCategory" class="form-select select2" style="width: 100%;"></select>
+                                </div>
+
+                                <!-- Status Filter -->
+                                <div class="col-xl-4">
+                                    <label class="fw-semibold mb-2">Status:</label>
+                                    <select id="ddlFilterStatus" class="form-select">
+                                        <option value="">--Status--</option>
+                                        <option value="1">Active</option>
+                                        <option value="0">Inactive</option>
+                                    </select>
+                                </div>
+
+                                <!-- Buttons -->
+                                <div class="col-xl-4 mt-3">
+                                    <div class="input-group">
+                                        <button id="btnSearch" class="btn btn-primary" type="button">Search</button>
+                                        &nbsp;&nbsp;
+                                        <button id="btnReset" class="btn btn-danger" type="button">Reset</button>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </fieldset>
+
+                        <!-- ==============================
+                            TABLE SECTION
+                        =============================== -->
+                        <div class="row mt-3">
+                            <div class="col-xl-12">
+
+                                <div class="card custom-card">
+                                    <div class="card-body p-0">
+
+                                        <div class="table-responsive">
+                                            <table class="table text-nowrap table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Sr No</th>
+                                                        <th class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Category</th>
+                                                        <th class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Sub Category</th>
+                                                        <th class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Business Name</th>
+                                                        <th class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Status</th>
+                                                        <th class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tblBusinessData"></tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <!-- Pagination -->
+                                <div id="paginationContainer" class="d-flex justify-content-end align-items-center mt-3 mb-3"></div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- ======================================
+      BUSINESS MANAGEMENT MODAL
+====================================== -->
+<!-- Improved & Responsive Business Management Modal (Bootstrap 5 Grid Layout) -->
+<!-- ULTRA MODERN MULTI-STEP (TABS + STEPPER) BUSINESS MANAGEMENT MODAL -->
+<div class="modal fade" id="BusinessMgmtModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4" style="background:#f8f9fb;">
+
+            <!-- Header -->
+            <div class="modal-header border-0" style="background: linear-gradient(135deg, #b5025c 0%, #e11379 100%); color:white; padding:1.3rem 1.6rem;">
+                <h4 class="modal-title fw-bold d-flex align-items-center">
+                    <i class="bi bi-shop-window me-2"></i>
+                    Business Management
+                    <span id="txtModalMode" class="fw-light ms-2">Add / Update</span>
+                </h4>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body p-4">
+
+                <!-- STEP INDICATOR -->
+                <ul class="nav nav-pills mb-4 justify-content-center stepper" id="businessStepper" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active  px-4 py-2" id="step1-tab" data-bs-toggle="pill" data-bs-target="#step1" type="button" role="tab">
+                            <i class="bi bi-info-circle me-1"></i> Basic Info
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link  px-4 py-2" id="step2-tab" data-bs-toggle="pill" data-bs-target="#step2" type="button" role="tab">
+                            <i class="bi bi-geo-alt me-1"></i> Location
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link  px-4 py-2" id="step3-tab" data-bs-toggle="pill" data-bs-target="#step3" type="button" role="tab">
+                            <i class="bi bi-credit-card me-1"></i> Payment
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link px-4 py-2" id="step4-tab" data-bs-toggle="pill" data-bs-target="#step4" type="button" role="tab">
+                            <i class="bi bi-images me-1"></i> Images & Amenities
+                        </button>
+                    </li>
+                </ul>
+
+
+                <!-- TAB CONTENT -->
+                <div class="tab-content" id="businessStepperContent">
+
+                    <!-- STEP 1 -->
+                    <div class="tab-pane fade show active" id="step1" role="tabpanel">
+                        <div class="card shadow-sm border-0 rounded-3 mb-4">
+                            <div class="card-body p-4">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">Category</label>
+                                        <select id="ddlBusinessCategory" class="form-select shadow-sm"></select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">Sub Category</label>
+                                        <select id="ddlBusinessSubCategory" class="form-select shadow-sm"></select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">Business Name</label>
+                                        <input type="text" id="txtBusinessName" class="form-control shadow-sm" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">Contact Number</label>
+                                        <input type="text" id="txtContactNumber" class="form-control shadow-sm" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <button class="btn btn-primary px-4 nextStep" data-next="#step2-tab">Next →</button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2 -->
+                    <div class="tab-pane fade" id="step2" role="tabpanel">
+                        <div class="card shadow-sm border-0 rounded-3 mb-4">
+                            <div class="card-body p-4">
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label class="form-label fw-semibold">Address</label>
+                                        <textarea id="txtAddress" class="form-control shadow-sm"></textarea>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">Latitude</label>
+                                        <input id="txtLatitude" class="form-control shadow-sm" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">Longitude</label>
+                                        <input id="txtLongitude" class="form-control shadow-sm" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-secondary px-4 prevStep" data-prev="#step1-tab">← Back</button>
+                            <button class="btn btn-primary px-4 nextStep" data-next="#step3-tab">Next →</button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3 -->
+                    <div class="tab-pane fade" id="step3" role="tabpanel">
+                        <div class="card shadow-sm border-0 rounded-3 mb-4">
+                            <div class="card-body p-4">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">Payment Method</label>
+                                        <select id="ddlPaymentMethod" class="form-select shadow-sm"></select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">Status</label>
+                                        <select id="ddlBusinessStatus" class="form-select shadow-sm"></select>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label fw-semibold">Description</label>
+                                        <textarea id="txtDescription" class="form-control shadow-sm"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-secondary px-4 prevStep" data-prev="#step2-tab">← Back</button>
+                            <button class="btn btn-primary px-4 nextStep" data-next="#step4-tab">Next →</button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 4 -->
+                    <div class="tab-pane fade" id="step4" role="tabpanel">
+                        <div class="card shadow-sm border-0 rounded-3 mb-4">
+                            <div class="card-body p-4">
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label class="form-label fw-semibold">Upload Images (Max 5)</label>
+                                        <input type="file" id="fileBusinessImages" class="form-control shadow-sm" multiple />
+                                        <div id="previewImages" class="d-flex flex-wrap gap-2 mt-2"></div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label fw-semibold">Amenities</label>
+                                        <div id="amenityContainer">
+                                            <div class="input-group mb-2">
+                                                <input type="text" class="form-control shadow-sm txtAmenities" />
+                                                <button type="button" class="btn btn-success btnAddAmenity">
+                                                    <i class="bi bi-plus-circle"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-secondary px-4 prevStep" data-prev="#step3-tab">← Back</button>
+                            <button type="button" id="btnSaveOrUpdateBusiness" class="btn btn-success px-5">
+                                <i class="bi bi-check2-circle me-1"></i> Finish
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" id="hdnBusinessId" />
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer border-0"></div>
+        </div>
+    </div>
+</div>
+
+
+<!-- SELECT2 + jQuery -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    // Step Navigation
+    $(document).on('click', '.nextStep', function () {
+        const next = $(this).data('next');
+        $(next).click();
+    });
+    $(document).on('click', '.prevStep', function () {
+        const prev = $(this).data('prev');
+        $(prev).click();
+    });
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        // =============================
+        // INIT SELECT2
+        // =============================
+        $(".select2").select2({
+            width: "100%"
+        });
+
+        // =============================
+        // LOAD DROPDOWNS
+        // =============================
+        BindCategoryForFilter();
+        BindCategoryforDD();
+        loadPaymentMethods();
+
+        // =============================
+        // EVENTS
+        // =============================
+        $("#ddlFilterCategory").on("change", function () {
+            loadFilterSubCategories();
+        });
+
+        $("#ddlBusinessCategory").on("change", function () {
+            loadModalSubCategories();
+        });
+
+        $("#btnSearch").click(function () {
+            loadBusinessList(1);
+        });
+
+        $("#btnReset").click(function () {
+            resetFilters();
+        });
+
+        $("#btnAddBusiness").click(function () {
+            openAddBusinessModal();
+        });
+
+        $("#btnSaveOrUpdateBusiness").click(function () {
+            saveBusiness();
+        });
+
+        // =============================
+        // INITIAL LOAD
+        // =============================
+        loadBusinessList(1);
+
+    });
+
+    function BindCategoryForFilter() {
+        $.ajax({
+            url: '/Business/GetCategoryForDropdown',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                if (data && data.length > 0) {
+                    $('#ddlFilterCategory').empty();
+                    $.each(data, function (i, item) {
+                        const optionHtml = `
+                       <option value="${item.Id}">
+                           ${item.Text}
+                       </option>`;
+                        $('#ddlFilterCategory').append(optionHtml);
+                    });
+
+                    // Initialize Select2 with images
+                    $('#ddlFilterCategory').select2({
+                        templateSelection: formatUserSelection
+                    });
+                }
+            },
+            error: function (xhr) {
+                console.error('Error loading users:', xhr);
+            }
+        })
+    }
+
+    function BindCategoryforDD() {
+        $.ajax({
+            url: '/Business/GetCategoryForDropdown',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                if (data && data.length > 0) {
+                    $('#ddlBusinessCategory').empty();
+                    $.each(data, function (i, item) {
+                        const optionHtml = `
+                   <option value="${item.Id}">
+                       ${item.Text}
+                   </option>`;
+                        $('#ddlBusinessCategory').append(optionHtml);
+                    });
+                }
+            },
+            error: function (xhr) {
+                console.error('Error loading users:', xhr);
+            }
+        })
+    }
+
+    function formatUserSelection(user) {
+        return user.text;
+    }
+
+    function loadFilterSubCategories() {
+        var ids = $("#ddlFilterCategory").val();
+        if (!ids) {
+            $("#ddlFilterSubCategory").empty();
+            return;
+        }
+
+        $.get("/Business/GetSubCategoriesByCategories", { categoryIds: ids.join(",") }, function (res) {
+            $("#ddlFilterSubCategory").empty();
+            $.each(res, function (i, row) {
+                $("#ddlFilterSubCategory").append(`<option value="${row.Id}">${row.Text}</option>`);
+            });
+
+            $('#ddlFilterSubCategory').select2({
+                templateSelection: formatUserSelection
+            });
+        });
+    }
+
+
+    function loadPaymentMethods() {
+        $.get("/Business/GetPaymentMethods", function (res) {
+            $("#ddlPaymentMethod").empty().append(`<option value="">Select</option>`);
+            $.each(res, function (i, row) {
+                $("#ddlPaymentMethod").append(`<option value="${row.Id}">${row.Text}</option>`);
+            });
+        });
+    }
+
+
+    function loadModalSubCategories() {
+        let catId = $("#ddlBusinessCategory").val();
+
+        if (!catId) {
+            $("#ddlBusinessSubCategory").empty();
+            return;
+        }
+
+        $.get("/Business/GetSubCategoriesByCategories",
+            { categoryIds: catId },
+            function (res) {
+                $("#ddlBusinessSubCategory").empty();
+                $.each(res, function (i, r) {
+                    $("#ddlBusinessSubCategory").append(`<option value="${r.Id}">${r.Text}</option>`);
+                });
+            });
+    }
+
+
+    function loadBusinessList(page = 1) {
+
+        let filterData = {
+            categoryIds: ($("#ddlFilterCategory").val() || []).join(","),
+            subCategoryIds: ($("#ddlFilterSubCategory").val() || []).join(","),
+            businessName: $("#filterBusinessName").val(),
+            fromDate: $("#filterFromDate").val(),
+            toDate: $("#filterToDate").val(),
+            status: $("#ddlFilterStatus").val(),
+            pageIndex: page,
+            pageSize: 10
+        };
+
+        $.ajax({
+            url: "/Business/GetBusinesses",
+            method: "GET",
+            data: filterData,
+            success: function (res) {
+
+                $("#tblBusinessData").empty();
+
+                $.each(res.Data, function (i, row) {
+
+                    $("#tblBusinessData").append(`
+                    <tr>
+                        <td>${row.SrNo}</td>
+                        <td>${row.CategoryName}</td>
+                        <td>${row.SubCategoryName}</td>
+                        <td>${row.BusinessName}</td>
+                        <td>${row.IsActive ? "Active" : "Inactive"}</td>
+                        <td>
+                            <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-info btn-edit" onclick="editBusiness(${row.BusinessId})"><i class="ri-edit-line"></i></a> 
+                            <button style="display:none" class="btn btn-sm btn-warning" onclick="editBusiness(${row.BusinessId})">Edit</button>
+                        </td>
+                    </tr>
+                `);
+                });
+
+                buildPagination(res.TotalCount, page);
+            }
+        });
+    }
+
+    function buildPagination(total, currentPage) {
+        let pageSize = 10;
+        let totalPages = Math.ceil(total / pageSize);
+
+        $("#paginationContainer").empty();
+
+        let html = `<ul class="pagination">`;
+
+        for (let p = 1; p <= totalPages; p++) {
+            html += `
+            <li class="page-item ${p === currentPage ? "active" : ""}">
+                <a class="page-link" href="javascript:void(0)" onclick="loadBusinessList(${p})">${p}</a>
+            </li>`;
+        }
+
+        html += "</ul>";
+
+        $("#paginationContainer").html(html);
+    }
+
+
+    function openAddBusinessModal() {
+
+        $("#txtModalMode").text("Add");
+        $("#btnSaveOrUpdateBusiness").text("Submit");
+
+        $("#BusinessMgmtModal").modal("show");
+        $("#hdnBusinessId").val("");
+
+        // reset fields
+        $("#ddlBusinessCategory").val("");
+        $("#ddlBusinessSubCategory").empty();
+        $("#txtBusinessName").val("");
+        $("#txtContactNumber").val("");
+        $("#txtAddress").val("");
+        $("#txtLatitude").val("");
+        $("#txtLongitude").val("");
+        $("#ddlPaymentMethod").val("");
+        $("#txtDescription").val("");
+        $("#ddlBusinessStatus").val("");
+
+        $("#fileBusinessImages").val("");
+        $("#previewImages").empty();
+
+        $("#amenityContainer").html(`
+        <div class="input-group mb-2">
+            <input type="text" class="form-control txtAmenities" placeholder="Enter amenity" />
+            <button type="button" class="btn btn-success btnAddAmenity">+</button>
+        </div>
+    `);
+    }
+
+
+    function editBusiness(id) {
+
+        $.get("/Business/GetBusinessById", { id: id }, function (res) {
+
+            $("#txtModalMode").text("Update");
+            $("#btnSaveOrUpdateBusiness").text("Update");
+
+            $("#BusinessMgmtModal").modal("show");
+
+            let b = res.Business;
+
+            $("#hdnBusinessId").val(b.BusinessId);
+
+            $("#ddlBusinessCategory").val(b.CategoryId).change();
+
+            setTimeout(() => {
+                $("#ddlBusinessSubCategory").val(b.SubCategoryId);
+            }, 500);
+
+            $("#txtBusinessName").val(b.BusinessName);
+            $("#txtContactNumber").val(b.ContactNumber);
+            $("#txtAddress").val(b.Address);
+            $("#txtLatitude").val(b.Latitude);
+            $("#txtLongitude").val(b.Longitude);
+            $("#ddlPaymentMethod").val(b.PaymentId);
+            $("#txtDescription").val(b.Description);
+            $("#ddlBusinessStatus").val(b.IsActive ? 1 : 0);
+
+            // Load Amenities
+            $("#amenityContainer").empty();
+            $.each(res.Amenities, function (i, t) {
+
+                // LAST ITEM → show "+" button
+                if (i === res.Amenities.length - 1) {
+                    $("#amenityContainer").append(`
+            <div class="input-group mb-2">
+                <input type="text" class="form-control txtAmenities" value="${t}" />
+                <button type="button" class="btn btn-success btnAddAmenity">+</button>
+            </div>
+        `);
+                }
+                else {
+                    // Normal items → show remove button
+                    $("#amenityContainer").append(`
+            <div class="input-group mb-2">
+                <input type="text" class="form-control txtAmenities" value="${t}" />
+                <button type="button" class="btn btn-danger btnRemoveAmenity">X</button>
+            </div>
+        `);
+                }
+            });
+
+
+            // Load images
+            $("#previewImages").empty();
+            $.each(res.Images, function (i, img) {
+                $("#previewImages").append(`
+                <img src="https://socialmithila.com${img.Url}" width="80" class="me-2 mb-2" />
+            `);
+            });
+
+        });
+    }
+
+
+    function saveBusiness() {
+
+        // 1️⃣ Collect Amenities
+        let amenities = [];
+        $(".txtAmenities").each(function () {
+            if ($(this).val().trim() !== "")
+                amenities.push($(this).val().trim());
+        });
+
+        if (amenities.length > 20) {
+            alert("Max 20 amenities allowed");
+            return;
+        }
+
+        // 2️⃣ Validate Image Count (actual files, not names)
+        let files = $("#fileBusinessImages")[0].files;
+        if (files.length > 5) {
+            alert("Max 5 images allowed");
+            return;
+        }
+
+        // 3️⃣ Prepare form data for SaveBusiness API
+        let data = {
+            businessId: $("#hdnBusinessId").val(),
+            businessName: $("#txtBusinessName").val(),
+            categoryId: $("#ddlBusinessCategory").val(),
+            subCategoryId: $("#ddlBusinessSubCategory").val(),
+            contactNumber: $("#txtContactNumber").val(),
+            address: $("#txtAddress").val(),
+            latitude: $("#txtLatitude").val(),
+            longitude: $("#txtLongitude").val(),
+            rating: "",
+            distanceKm: "",
+            imageUrlsCsv: "",                // ❗ NO images here now
+            paymentId: $("#ddlPaymentMethod").val(),
+            description: $("#txtDescription").val(),
+            userId: 1,
+            isActive: $("#ddlBusinessStatus").val(),
+            amenitiesPipe: amenities.join("|")
+        };
+
+        // 4️⃣ First Save Business
+        $.post("/Business/SaveBusiness", data, function (res) {
+
+            if (!res.Success) {
+                alert(res.Message);
+                return;
+            }
+
+            let newBusinessId = (res.Data && res.Data.BusinessId)
+                ? res.Data.BusinessId
+                : data.businessId;
+
+            // 5️⃣ After business saved, upload images
+            uploadBusinessImages(newBusinessId);
+        });
+    }
+
+    function uploadBusinessImages(businessId) {
+
+        let files = $("#fileBusinessImages")[0].files;
+
+        // If no images uploaded → finish process
+        if (files.length === 0) {
+            alert("Business saved successfully.");
+            $("#BusinessMgmtModal").modal("hide");
+            loadBusinessList(1);
+            return;
+        }
+
+        let formData = new FormData();
+        formData.append("businessId", businessId);
+
+        for (let i = 0; i < files.length; i++) {
+            formData.append("file" + i, files[i]);
+        }
+
+        $.ajax({
+            url: "https://socialmithila.com/Business/UploadBusinessImages?businessId=" + businessId,
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (resp) {
+
+                if (!resp.success) {
+                    alert(resp.message);
+                    return;
+                }
+
+                alert("Business & Images saved successfully.");
+
+                $("#BusinessMgmtModal").modal("hide");
+                loadBusinessList(1);
+            },
+            error: function () {
+                alert("Image upload failed. Try again.");
+            }
+        });
+    }
+
+
+
+
+    $(document).on("click", ".btnAddAmenity", function () {
+        $("#amenityContainer").append(`
+        <div class="input-group mb-2">
+            <input type="text" class="form-control txtAmenities" placeholder="Enter amenity" />
+            <button type="button" class="btn btn-danger btnRemoveAmenity">X</button>
+        </div>
+    `);
+    });
+
+    // Remove
+    $(document).on("click", ".btnRemoveAmenity", function () {
+        $(this).closest(".input-group").remove();
+    });
+
+
+    $("#fileBusinessImages").on("change", function () {
+
+        let files = this.files;
+
+        if (files.length > 5) {
+            alert("Max 5 images allowed");
+            $(this).val("");
+            return;
+        }
+
+        $("#previewImages").empty();
+
+        for (let i = 0; i < files.length; i++) {
+            let reader = new FileReader();
+            reader.onload = function (e) {
+                $("#previewImages").append(`<img src="${e.target.result}" width="80" class="me-2 mb-2" />`);
+            };
+            reader.readAsDataURL(files[i]);
+        }
+    });
+
+
+    function resetFilters() {
+        $("#ddlFilterCategory").val(null).trigger("change");
+        $("#ddlFilterSubCategory").empty();
+        $("#ddlFilterStatus").val("");
+        loadBusinessList(1);
+    }
+
+</script>
