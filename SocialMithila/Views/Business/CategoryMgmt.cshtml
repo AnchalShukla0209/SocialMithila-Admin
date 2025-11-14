@@ -1,8 +1,597 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "CategoryMgmt";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>CategoryMgmt</h2>
+<!-- CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<style>
+    fieldset {
+        background-color: #eeeeee;
+    }
+
+    legend {
+        background-color: gray;
+        color: white;
+        padding: 5px 10px;
+    }
+
+    .custom-gridjs-th {
+        background-color: #794abf !important;
+        color: #fff !important;
+    }
+
+    .fieldsethead {
+        border: 1px groove #b5025c !important;
+        margin: 0;
+        padding: 10px;
+        border-radius: 4px;
+        background-color: #f5f5f5;
+    }
+
+    .legendhead {
+        font-size: 14px;
+        font-weight: bold;
+        color: #fff;
+        background: #b5025c;
+        border-radius: 4px;
+        padding: 5px 10px;
+    }
+
+    #tblUserData th {
+        background: #5e2f82 !important;
+        color: white !important;
+    }
+
+    td, th {
+        white-space: nowrap !important;
+    }
+
+    .table thead tr th {
+        background-color: #b5025c !important;
+        color: #fff !important;
+    }
+</style>
+
+
+<style>
+    fieldset {
+        background-color: #eeeeee;
+    }
+
+    legend {
+        background-color: gray;
+        color: white;
+        padding: 5px 10px;
+    }
+
+    .custom-gridjs-th {
+        background-color: #794abf !important;
+        color: #fff !important;
+    }
+
+    .disablescss {
+        pointer-events: none;
+        background-color: rgba(0, 0, 0, 0.1);
+        border: 1px solid #ccc;
+    }
+
+    #tblTxnReport th {
+        background: #b5025c !important;
+        color: white !important;
+    }
+
+    td {
+        white-space: nowrap !important;
+    }
+
+    th {
+        white-space: nowrap !important;
+    }
+
+    .fieldsethead {
+        border: 1px groove #b5025c !important;
+        margin: 0;
+        padding: 10px;
+        position: relative;
+        border-radius: 4px;
+        background-color: #f5f5f5;
+        padding-left: 10px !important;
+        margin-top: 5px;
+    }
+
+    .legendhead {
+        margin-top: -2%;
+        font-size: 14px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        margin-bottom: 0px;
+        width: 100%;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px 5px 5px 10px;
+        color: #fff;
+        background: #b5025c;
+    }
+
+    .gridjs-th {
+        background-color: rgb(var(--primary-rgb)) !important;
+        color: #fff !important;
+    }
+
+    .se-pre-con {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: url('../../loader-64x/Cube-1s-63px.gif') center no-repeat transparent;
+        background-color: #0f0e0e;
+        opacity: 0.5;
+    }
+
+    .modal-header {
+        background: #eeee !important;
+    }
+
+    body {
+        font-family: 'Segoe UI', sans-serif !important;
+    }
+
+    .modal-header {
+        background: #b5025c !important;
+        color: white !important
+    }
+
+    .btn-close {
+        color: white !important;
+        font-weight: 900;
+    }
+
+    .modal-title {
+        color: white !important
+    }
+
+    .btn-primary {
+        background: #b5025c !important
+    }
+
+    .modal-content {
+        border-radius: 6px !important;
+    }
+
+    .btn-primary:hover {
+        background-color: #b5025c !important;
+        border-color: rgb(var(--primary-rgb));
+        color: #fff;
+    }
+
+    .pagination {
+        display: flex;
+        padding-left: 0;
+        list-style: none;
+    }
+
+    .page-link {
+        position: relative;
+        display: block;
+        color: #b5025c;
+        text-decoration: none;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .page-link {
+            transition: none;
+        }
+    }
+
+    .page-link:hover {
+        z-index: 2;
+        color: #185dca;
+        background-color: #e9ecef;
+        border-color: #dee2e6;
+    }
+
+    .page-link:focus {
+        z-index: 3;
+        color: #185dca;
+        background-color: #e9ecef;
+        outline: 0;
+        box-shadow: 0 0 0 0rem rgba(30, 116, 253, 0.25);
+    }
+
+    .page-item:not(:first-child) .page-link {
+        margin-left: -1px;
+    }
+
+    .page-item.active .page-link {
+        z-index: 3;
+        color: #fff;
+        background-color: #b5025c;
+        border-color: #b5025c;
+    }
+
+    .page-item.disabled .page-link {
+        color: #6c757d;
+        pointer-events: none;
+        background-color: #fff;
+        border-color: #dee2e6;
+    }
+
+    .page-link {
+        padding: 0.375rem 0.75rem;
+    }
+
+    .page-item:first-child .page-link {
+        border-top-left-radius: 0.25rem;
+        border-bottom-left-radius: 0.25rem;
+    }
+
+    .page-item:last-child .page-link {
+        border-top-right-radius: 0.25rem;
+        border-bottom-right-radius: 0.25rem;
+    }
+
+    .pagination-lg .page-link {
+        padding: 0.75rem 1.5rem;
+        font-size: 1.25rem;
+    }
+
+    .pagination-lg .page-item:first-child .page-link {
+        border-top-left-radius: 0.3rem;
+        border-bottom-left-radius: 0.3rem;
+    }
+
+    .pagination-lg .page-item:last-child .page-link {
+        border-top-right-radius: 0.3rem;
+        border-bottom-right-radius: 0.3rem;
+    }
+
+    .pagination-sm .page-link {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .pagination-sm .page-item:first-child .page-link {
+        border-top-left-radius: 0.2rem;
+        border-bottom-left-radius: 0.2rem;
+    }
+
+    .pagination-sm .page-item:last-child .page-link {
+        border-top-right-radius: 0.2rem;
+        border-bottom-right-radius: 0.2rem;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 0.35em 0.65em;
+        font-size: 0.75em;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 0.25rem;
+    }
+
+        .badge:empty {
+            display: none;
+        }
+
+    .btn .badge {
+        position: relative;
+        top: -1px;
+    }
+
+    .custom-gridjs-th {
+        background-color: #b5025c !important;
+        color: #fff !important;
+    }
+</style>
+
+<div class="main-content app-content">
+    <div class="container-fluid">
+        <!-- row -->
+        <!-- row -->
+        <div class="row row-sm ">
+            <div class="col-md-12 col-xl-12">
+
+                <div id="dvloader" class="se-pre-con" style="display:none"></div>
+
+                <div class="card overflow-hidden review-project">
+                    <div class="card-body">
+                        <fieldset class="fieldsethead">
+                            <legend class="legendhead">
+                                Filter
+                                <button style="float: right !important; background: white !important; color: #b5025c !important" class="btn btn-primary btn-sm" onclick="openAddCategory()" id="btnAddSubCategory">Add Sub-Category</button>
+                            </legend>
+                            <br />
+                            <div class="row">
+                                <div class="col-xl-4">
+                                    <div class="">
+                                        <div class="">
+                                            <label class="fw-semibold mb-2">Category:</label>
+                                            <input type="text" id="txtCategorySearch" class="form-control" placeholder="Enter Category Name" />
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-xl-4" style="margin-top:25px">
+                                    <div class="">
+                                        <div class="">
+                                            <div class="input-group">
+
+                                                <button class="btn btn-primary btn-block" id="btnSearch" title="Search" style="border-radius:7px" type="button">Search</button>
+                                                &nbsp;&nbsp;
+                                                <button class="btn btn-danger btn-block" onclick="resetFilter()" id="btnReset" title="Reset" style="border-radius:7px" type="button">Reset</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </fieldset>
+
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="card custom-card">
+
+                                    <div class="card-body">
+                                        <div id="grid-search">
+                                            <div role="complementary" class="gridjs gridjs-container" style="width: 100%;">
+                                                <div class="row">
+                                                    <div class="col-xl-12">
+                                                        <div class="card custom-card">
+
+                                                            <div class="card-body p-0">
+                                                                <div class="table-responsive">
+                                                                    <table class="table text-nowrap table-bordered">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th scope="col" class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Sr No</th>
+                                                                                <th scope="col" class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Category Name</th>
+                                                                                <th scope="col" class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Status</th>
+                                                                                <th scope="col" class="custom-gridjs-th" style="background-color: #b5025c !important; color: white !important">Action</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="categoryBody">
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div id="paginationContainer" class="d-flex justify-content-end align-items-center mb-4" style="padding:5px"></div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ✅ Single Add / Edit Modal -->
+<div class="modal fade" id="categoryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#b5025c; color:#fff;">
+                <h5 class="modal-title" id="modalTitle">Add / Edit Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="hdnCategoryId" />
+                <div class="mb-3">
+                    <label>Category Name</label>
+                    <input type="text" id="txtCategoryName" class="form-control" />
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="chkActive">
+                    <label class="form-check-label" for="chkActive">Is Active</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btnSave" onclick="saveCategory()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END MODAL -->
+
+<script>
+    var pageIndex = 1;
+    var pageSize = 5;
+
+    $(document).ready(function () {
+        loadCategories(pageIndex);
+    });
+
+    // Load categories table
+    function loadCategories(page) {
+        $.ajax({
+            url: '/Business/GetCategories',
+            type: 'GET',
+            data: { PageIndex: page, PageSize: pageSize },
+            success: function (response) {
+                var data = response.Data;
+                var total = response.TotalCount;
+                var tbody = "";
+                if (!data || data.length === 0) {
+                    tbody = `<tr><td colspan="4" class="text-center">No Data Found</td></tr>`;
+                    $("#categoryBody").html(tbody);
+                    return;
+                }
+                $.each(data, function (i, c) {
+                    let statusBadge = c.IsActive
+                        ? `<span class="badge bg-success">Active</span>`
+                        : `<span class="badge bg-danger">Inactive</span>`;
+                    tbody += `<tr>
+                        <td>${((page - 1) * pageSize) + (i + 1)}</td>
+                        <td>${c.CategoryName}</td>
+                        <td>${statusBadge}</td>
+                        <td>
+                          <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-info btn-edit" onclick="editCategory(${c.CategoryId})"><i class="ri-edit-line"></i></a>
+                            
+                        </td>
+                    </tr>`;
+                });
+                $("#categoryBody").html(tbody);
+                bindPagination(total, page);
+            },
+            error: function (xhr) { console.log(xhr.responseText); }
+        });
+    }
+
+    // Pagination
+    function bindPagination(totalItems, currentPage) {
+        var totalPages = Math.ceil(totalItems / pageSize);
+        $("#paginationContainer").html(getPaginationHtml(currentPage, totalPages));
+    }
+
+    function getPaginationHtml(currentPage, totalPages) {
+        let html = '<ul class="pagination pagination-sm mb-0">';
+        html += currentPage === 1
+            ? `<li class="page-item disabled"><a class="page-link">Previous</a></li>`
+            : `<li class="page-item"><a class="page-link" href="#" onclick="loadCategories(${currentPage - 1})">Previous</a></li>`;
+        for (let i = 1; i <= totalPages; i++) {
+            html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="loadCategories(${i})">${i}</a>
+                     </li>`;
+        }
+        html += currentPage === totalPages
+            ? `<li class="page-item disabled"><a class="page-link">Next</a></li>`
+            : `<li class="page-item"><a class="page-link" href="#" onclick="loadCategories(${currentPage + 1})">Next</a></li>`;
+        html += '</ul>';
+        return html;
+    }
+
+    // Global function to open Add Category modal
+    window.openAddCategory = function () {
+        $("#modalTitle").text("Add Category");
+        $("#btnSave").text("Save");
+        $("#hdnCategoryId").val("");
+        $("#txtCategoryName").val("");
+        $("#chkActive").prop("checked", true);
+        $("#categoryModal").modal("show");
+    }
+
+    // Global function to open Edit Category modal
+    window.editCategory = function (id) {
+        $.ajax({
+            url: '/Business/GetCategoryById',
+            type: 'GET',
+            data: { categoryId: id },
+            success: function (res) {
+                $("#modalTitle").text("Edit Category");
+                $("#btnSave").text("Update");
+                $("#hdnCategoryId").val(res.CategoryId);
+                $("#txtCategoryName").val(res.CategoryName);
+                $("#chkActive").prop("checked", res.IsActive);
+                $("#categoryModal").modal("show");
+            },
+            error: function (xhr) { Swal.fire("Error", "Failed to fetch category", "error"); }
+        });
+    }
+
+    // Global function to save (Add or Edit)
+    window.saveCategory = function () {
+        let id = $("#hdnCategoryId").val();
+        id = id === "" ? 0 : parseInt(id); // Add=0, Edit=existing Id
+        let name = $("#txtCategoryName").val().trim();
+        let status = $("#chkActive").is(":checked");
+
+        if (name === "") {
+            Swal.fire({ icon: 'warning', title: 'Category Required', text: 'Please enter a category name!' });
+            return;
+        }
+
+        $.ajax({
+            url: '/Business/SaveCategory',
+            type: 'POST',
+            data: { categoryId: id, categoryName: name, isActive: status },
+            success: function (res) {
+                if (res.Status === 0) {
+                    Swal.fire({ icon: 'error', title: 'Error', text: res.Message });
+                    return;
+                }
+                Swal.fire({ icon: 'success', title: 'Success', text: res.Message });
+                loadCategories(pageIndex);
+                $("#categoryModal").modal("hide");
+                // clear fields
+                $("#hdnCategoryId").val("");
+                $("#txtCategoryName").val("");
+                $("#chkActive").prop("checked", true);
+            },
+            error: function (xhr) {
+                Swal.fire({ icon: 'error', title: 'Server Error', text: xhr.responseText });
+            }
+        });
+    }
+
+    $("#btnSearch").click(function () {
+        var searchText = $("#txtCategorySearch").val().trim();
+
+        $.ajax({
+            url: '/Business/GetCategories',
+            type: 'GET',
+            data: {
+                PageIndex: 1,
+                PageSize: pageSize,
+                SearchText: searchText
+            },
+            success: function (response) {
+                var data = response.Data;
+                var total = response.TotalCount;
+                var tbody = "";
+
+                if (!data || data.length === 0) {
+                    tbody = `<tr><td colspan="4" class="text-center">No Data Found</td></tr>`;
+                    $("#categoryBody").html(tbody);
+                    return;
+                }
+
+                $.each(data, function (i, c) {
+                    let statusBadge = c.IsActive ? `<span class="badge bg-success">Active</span>` : `<span class="badge bg-danger">Inactive</span>`;
+                    tbody += `<tr>
+                    <td>${i + 1}</td>
+                    <td>${c.CategoryName}</td>
+                    <td>${statusBadge}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="editCategory(${c.CategoryId})">Edit</button>
+                    </td>
+                </tr>`;
+                });
+
+                $("#categoryBody").html(tbody);
+                bindPagination(total, 1);
+            }
+        });
+    });
+
+
+    function resetFilter() {
+        $("#txtCategorySearch").val("");
+        loadCategories(1);
+    }
+</script>
