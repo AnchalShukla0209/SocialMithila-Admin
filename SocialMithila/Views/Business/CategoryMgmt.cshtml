@@ -1,8 +1,338 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "CategoryMgmt";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>CategoryMgmt</h2>
+<!-- CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<style>
+    fieldset {
+        background-color: #eeeeee;
+    }
+
+    legend {
+        background-color: gray;
+        color: white;
+        padding: 5px 10px;
+    }
+
+    .custom-gridjs-th {
+        background-color: #794abf !important;
+        color: #fff !important;
+    }
+
+    .fieldsethead {
+        border: 1px groove #b5025c !important;
+        margin: 0;
+        padding: 10px;
+        border-radius: 4px;
+        background-color: #f5f5f5;
+    }
+
+    .legendhead {
+        font-size: 14px;
+        font-weight: bold;
+        color: #fff;
+        background: #b5025c;
+        border-radius: 4px;
+        padding: 5px 10px;
+    }
+
+    #tblUserData th {
+        background: #5e2f82 !important;
+        color: white !important;
+    }
+
+    td, th {
+        white-space: nowrap !important;
+    }
+
+    .table thead tr th {
+        background-color: #b5025c !important;
+        color: #fff !important;
+    }
+</style>
+
+<div class="main-content app-content">
+    <div class="container-fluid">
+        <div class="row row-sm">
+            <div class="col-md-12 col-xl-12">
+                <div id="dvloader" class="se-pre-con" style="display:none"></div>
+                <div class="card overflow-hidden review-project">
+                    <div class="card-body">
+
+                        <!-- Filter Section -->
+                        <fieldset class="fieldsethead">
+                            <legend class="legendhead" style="position: relative;">
+                                Filter
+                                <button class="btn btn-outline-light"
+                                        style="position:absolute; right:10px; top:2px; border:2px solid #b5025c; color:#b5025c; border-radius:6px; padding:3px 12px; font-size:12px; background:white;"
+                                        onclick="openAddCategory()">
+                                    Add Category
+                                </button>
+                            </legend>
+                            <br />
+                            <div class="row">
+                                <div class="col-xl-3">
+                                    <label class="fw-semibold mb-2">Category:</label>
+                                    <input type="text" id="txtCategorySearch" class="form-control" placeholder="Enter Category Name" />
+                                </div>
+                                <div class="col-xl-4" style="margin-top:10px">
+                                    <div class="input-group">
+                                        <button class="btn btn-primary btn-block" id="btnSearch" title="Search" style="border-radius:7px" type="button">
+                                            Search
+                                        </button>
+                                        &nbsp;&nbsp;
+                                        <button class="btn btn-danger btn-block" onclick="resetFilter()" style="border-radius:7px" type="button">
+                                            Reset
+                                            <i class="fa fa-reset" style="font-size:17px" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- Category Table -->
+                        <div class="row mt-4">
+                            <div class="col-xl-12">
+                                <div class="card custom-card">
+                                    <div class="card-header">
+                                        <h5 class="card-title mb-0">Category List</h5>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="table-responsive">
+                                            <table class="table text-nowrap table-bordered mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Sr No</th>
+                                                        <th>Category Name</th>
+                                                        <th>Status</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="categoryBody"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pagination -->
+                        <div id="paginationContainer" class="d-flex justify-content-end align-items-center mt-3 mb-3"></div>
+
+                        <!-- ✅ Single Add / Edit Modal -->
+                        <div class="modal fade" id="categoryModal" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="background:#b5025c; color:#fff;">
+                                        <h5 class="modal-title" id="modalTitle">Add / Edit Category</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="hidden" id="hdnCategoryId" />
+                                        <div class="mb-3">
+                                            <label>Category Name</label>
+                                            <input type="text" id="txtCategoryName" class="form-control" />
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="chkActive">
+                                            <label class="form-check-label" for="chkActive">Is Active</label>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" id="btnSave" onclick="saveCategory()">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END MODAL -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JS -->
+<script>
+    var pageIndex = 1;
+    var pageSize = 10;
+
+    $(document).ready(function () {
+        loadCategories(pageIndex);
+    });
+
+    // Load categories table
+    function loadCategories(page) {
+        $.ajax({
+            url: '/Business/GetCategories',
+            type: 'GET',
+            data: { PageIndex: page, PageSize: pageSize },
+            success: function (response) {
+                var data = response.Data;
+                var total = response.TotalCount;
+                var tbody = "";
+                if (!data || data.length === 0) {
+                    tbody = `<tr><td colspan="4" class="text-center">No Data Found</td></tr>`;
+                    $("#categoryBody").html(tbody);
+                    return;
+                }
+                $.each(data, function (i, c) {
+                    let statusBadge = c.IsActive
+                        ? `<span class="badge bg-success">Active</span>`
+                        : `<span class="badge bg-danger">Inactive</span>`;
+                    tbody += `<tr>
+                        <td>${((page - 1) * pageSize) + (i + 1)}</td>
+                        <td>${c.CategoryName}</td>
+                        <td>${statusBadge}</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" onclick="editCategory(${c.CategoryId})">Edit</button>
+                        </td>
+                    </tr>`;
+                });
+                $("#categoryBody").html(tbody);
+                bindPagination(total, page);
+            },
+            error: function (xhr) { console.log(xhr.responseText); }
+        });
+    }
+
+    // Pagination
+    function bindPagination(totalItems, currentPage) {
+        var totalPages = Math.ceil(totalItems / pageSize);
+        $("#paginationContainer").html(getPaginationHtml(currentPage, totalPages));
+    }
+
+    function getPaginationHtml(currentPage, totalPages) {
+        let html = '<ul class="pagination pagination-sm mb-0">';
+        html += currentPage === 1
+            ? `<li class="page-item disabled"><a class="page-link">Previous</a></li>`
+            : `<li class="page-item"><a class="page-link" href="#" onclick="loadCategories(${currentPage - 1})">Previous</a></li>`;
+        for (let i = 1; i <= totalPages; i++) {
+            html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="loadCategories(${i})">${i}</a>
+                     </li>`;
+        }
+        html += currentPage === totalPages
+            ? `<li class="page-item disabled"><a class="page-link">Next</a></li>`
+            : `<li class="page-item"><a class="page-link" href="#" onclick="loadCategories(${currentPage + 1})">Next</a></li>`;
+        html += '</ul>';
+        return html;
+    }
+
+    // Global function to open Add Category modal
+    window.openAddCategory = function () {
+        $("#modalTitle").text("Add Category");
+        $("#btnSave").text("Save");
+        $("#hdnCategoryId").val("");
+        $("#txtCategoryName").val("");
+        $("#chkActive").prop("checked", true);
+        $("#categoryModal").modal("show");
+    }
+
+    // Global function to open Edit Category modal
+    window.editCategory = function (id) {
+        $.ajax({
+            url: '/Business/GetCategoryById',
+            type: 'GET',
+            data: { categoryId: id },
+            success: function (res) {
+                $("#modalTitle").text("Edit Category");
+                $("#btnSave").text("Update");
+                $("#hdnCategoryId").val(res.CategoryId);
+                $("#txtCategoryName").val(res.CategoryName);
+                $("#chkActive").prop("checked", res.IsActive);
+                $("#categoryModal").modal("show");
+            },
+            error: function (xhr) { Swal.fire("Error", "Failed to fetch category", "error"); }
+        });
+    }
+
+    // Global function to save (Add or Edit)
+    window.saveCategory = function () {
+        let id = $("#hdnCategoryId").val();
+        id = id === "" ? 0 : parseInt(id); // Add=0, Edit=existing Id
+        let name = $("#txtCategoryName").val().trim();
+        let status = $("#chkActive").is(":checked");
+
+        if (name === "") {
+            Swal.fire({ icon: 'warning', title: 'Category Required', text: 'Please enter a category name!' });
+            return;
+        }
+
+        $.ajax({
+            url: '/Business/SaveCategory',
+            type: 'POST',
+            data: { categoryId: id, categoryName: name, isActive: status },
+            success: function (res) {
+                if (res.Status === 0) {
+                    Swal.fire({ icon: 'error', title: 'Error', text: res.Message });
+                    return;
+                }
+                Swal.fire({ icon: 'success', title: 'Success', text: res.Message });
+                loadCategories(pageIndex);
+                $("#categoryModal").modal("hide");
+                // clear fields
+                $("#hdnCategoryId").val("");
+                $("#txtCategoryName").val("");
+                $("#chkActive").prop("checked", true);
+            },
+            error: function (xhr) {
+                Swal.fire({ icon: 'error', title: 'Server Error', text: xhr.responseText });
+            }
+        });
+    }
+
+    $("#btnSearch").click(function () {
+        var searchText = $("#txtCategorySearch").val().trim();
+
+        $.ajax({
+            url: '/Business/GetCategories', 
+            type: 'GET',
+            data: {
+                PageIndex: 1,
+                PageSize: pageSize,
+                SearchText: searchText  
+            },
+            success: function (response) {
+                var data = response.Data;
+                var total = response.TotalCount;
+                var tbody = "";
+
+                if (!data || data.length === 0) {
+                    tbody = `<tr><td colspan="4" class="text-center">No Data Found</td></tr>`;
+                    $("#categoryBody").html(tbody);
+                    return;
+                }
+
+                $.each(data, function (i, c) {
+                    let statusBadge = c.IsActive ? `<span class="badge bg-success">Active</span>` : `<span class="badge bg-danger">Inactive</span>`;
+                    tbody += `<tr>
+                    <td>${i + 1}</td>
+                    <td>${c.CategoryName}</td>
+                    <td>${statusBadge}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="editCategory(${c.CategoryId})">Edit</button>
+                    </td>
+                </tr>`;
+                });
+
+                $("#categoryBody").html(tbody);
+                bindPagination(total, 1);
+            }
+        });
+    });
+
+
+    function resetFilter() {
+        $("#txtCategorySearch").val(""); 
+        loadCategories(1);               
+    }
+</script>
